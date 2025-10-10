@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PD後学期</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ログアウトボタン -->
+  <button id="logoutBtn" class="logout-btn">ログアウト</button>
+
+  <div class="sidebar">
+    <h3>困ったら</h3>
+    <nav>
+      <a href="detail/index.html" id="fruitLink">果物図鑑へ</a>
+      <a href="https://cookpad.com/jp">食材の調理方法</a>
+      <a href="https://park.ajinomoto.co.jp/recipe/basic/vege_keeping/">食材の保管方法</a>
+      <a href="https://www4.city.kanazawa.lg.jp/soshikikarasagasu/zeroc/ondankataisaku/syokuhinlosstaisaku/7494.html">フードドライブ情報</a>
+      <a href="https://tabete.me/">フードシェアリングサービス情報</a>
+    </nav>
+  </div>
+
+  <div class="main">
+    <div class="header">EP403-3</div>
+    <div class="content">
+
+      <!-- 以下はあなたの既存コードをそのまま -->
+      <!-- 省略（元のHTMLを挿入） -->
+       <div class="schedule">
+        <h2>賞味期限または、消費期限</h2>
+        <form id="addItemForm">
+          <input type="text" id="itemName" placeholder="食材名" required>
+          <input type="date" id="itemDate" placeholder="期限" required>
+          <button type="submit">追加</button>
+        </form>
+        <table class="schedule-table" id="scheduleTable">
+          <tr><th>食材</th><th>期限</th><th>操作</th></tr>
+        </table>
+      </div>
+
+      <main class="calendar-app">
+        <header class="calendar-header">
+          <button id="prevBtn" aria-label="前の月">◀</button>
+          <div class="month-year" id="monthYear"></div>
+          <button id="nextBtn" aria-label="次の月">▶</button>
+        </header>
+
+        <section class="calendar-controls">
+          <button id="todayBtn">今日</button>
+          </section>
+
+        <table class="calendar" id="calendar">
+          <thead>
+            <tr>
+              <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+            </tr>
+          </thead>
+          <tbody id="calendarBody">
+            </tbody>
+        </table>
+
+        <footer class="legend">
+          <span class="legend-item today-dot">今日</span>
+          <span class="legend-item inactive">前後月</span>
+          <span class="legend-item event-dot-legend">期限</span>
+        </footer>
+        ※反映されない場合はリロードしてください
+      </main>
+      
+      <div class="messages">
+        <h2>食材の消費期限（目安）</h2>
+        <input type="text" id="searchBox" placeholder="名前で検索（例：きゅうり）">
+        <div class="tabs">
+          <button onclick="filterMessages('all')" id="tabAll">すべて</button>
+          <button onclick="filterMessages('unread')" id="tabUnread">冷蔵庫</button>
+          <button onclick="filterMessages('read')" id="tabRead">常温</button>
+        </div>
+        <div class="message-list" id="messageList">
+          <div class="message unread">
+            <div class="from">きゅうり</div>
+            <div class="title">10日</div>
+          </div>
+          <div class="message unread">
+            <div class="from">じゃがいも</div>
+            <div class="title">NG</div>
+          </div>
+          <div class="message unread">
+            <div class="from">玉ねぎ</div>
+            <div class="title">1〜2週間</div>
+          </div>
+          <div class="message unread">
+            <div class="from">にんじん</div>
+            <div class="title">2〜3週間（新聞紙などに包むとより長持ち）</div>
+          </div>
+          <div class="message unread">
+            <div class="from">ピーマン、パプリカ</div>
+            <div class="title">1週間ほど（ビニール袋に入れて野菜室）</div>
+          </div>
+          <div class="message unread">
+            <div class="from">きゃべつ</div>
+            <div class="title">2〜3週間（芯をくり抜いて湿らせたキッチンペーパーを入れると◎）</div>
+          </div>
+          <div class="message unread">
+            <div class="from">トマト</div>
+            <div class="title">完熟後は3〜4日（野菜室で）</div>
+          </div>
+          <div class="message unread">
+            <div class="from">ほうれん草、葉物</div>
+            <div class="title">2〜3日（湿らせたキッチンペーパーで包む）</div>
+          </div>
+          <div class="message unread">
+            <div class="from">とうもころし</div>
+            <div class="title">2~3日</div>
+          </div>
+          <div class="message read">
+            <div class="from">じゃがいも</div>
+            <div class="title">2〜4週間（風通しのよい涼しい場所）</div>
+          </div>
+          <div class="message read">
+            <div class="from">玉ねぎ</div>
+            <div class="title">1〜2か月（湿気を避けて保存）</div>
+          </div>
+          <div class="message read">
+            <div class="from">にんじん</div>
+            <div class="title">数日（夏場は不向き）</div>
+          </div>
+          <div class="message read">
+            <div class="from">ピーマン、パプリカ</div>
+            <div class="title">2〜3日（あまりおすすめしません）</div>
+          </div>
+          <div class="message read">
+            <div class="from">きゃべつ</div>
+            <div class="title">冬場であれば1週間ほど</div>
+          </div>
+          <div class="message read">
+            <div class="from">きゅうり</div>
+            <div class="title">1〜2日（暑い時期は厳しい）</div>
+          </div>
+          <div class="message read">
+            <div class="from">トマト</div>
+            <div class="title">完熟前なら3〜5日（風通しのよい場所）</div>
+          </div>
+          <div class="message read">
+            <div class="from">ほうれん草、葉物</div>
+            <div class="title">夏場は数時間で劣化することも</div>
+          </div>
+          <div class="message read">
+            <div class="from">トウモロコシ</div>
+            <div class="title">1日</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // 🔒 ログインチェック
+    if(localStorage.getItem("loggedIn") !== "true"){
+      window.location.href = "login.html";
+    }
+
+    // 🔓 ログアウト
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

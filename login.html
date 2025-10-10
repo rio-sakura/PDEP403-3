@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="main/style.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <h2>ログイン</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="ユーザー名" required>
+      <input type="password" id="password" placeholder="パスワード" required>
+      <button type="submit">ログイン</button>
+    </form>
+    <p id="loginError" class="error-message"></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      // 簡易ログイン認証
+      if(user === "user" && pass === "1234"){
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("loginError").textContent = "ユーザー名またはパスワードが間違っています。";
+      }
+    });
+  </script>
+</body>
+</html>

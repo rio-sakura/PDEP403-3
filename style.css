@@ -164,10 +164,10 @@ form button:hover {
   }
 }
 :root{
---bg:#f6f7fb;
+--bg:#f8f9f4;
 --card:#ffffff;
---accent:#2774e6;
---muted:#888;
+--accent:#4caf50;
+--muted:#777;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN",Meiryo, sans-serif;background:var(--bg);color:#111}

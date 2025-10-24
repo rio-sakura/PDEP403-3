@@ -1,0 +1,123 @@
+    <!doctype html>
+    <html lang="ja">
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>食材の保管ガイド｜保存方法と目安日数</title>
+    <link rel="stylesheet" href="food_storage.css" />
+    </head>
+    <body>
+    <header class="site-header">
+        <h1>食材の保管ガイド</h1>
+        <p class="lead">味の素パークを参考にした、家庭でできる食材の保存方法</p>
+    </header>
+
+    <main class="container">
+        <section class="controls">
+        <input id="search" placeholder="食材で検索（例：レタス、じゃがいも、ブロッコリー）" />
+        <select id="filter">
+            <option value="all">すべて表示</option>
+            <option value="fridge">冷蔵</option>
+            <option value="freezer">冷凍</option>
+            <option value="room">常温</option>
+        </select>
+        </section>
+
+        <section id="cards" class="cards">
+        <!-- Card: レタス -->
+        <article class="card fridge" data-keywords="レタス 野菜 葉物" data-type="fridge">
+            <h2>レタス</h2>
+            <p class="storage">保存場所：<span class="label fridge">冷蔵</span></p>
+            <p class="period">保存目安：3〜4日</p>
+            <ol class="steps">
+            <li>芯をくり抜き、濡らしたキッチンペーパーを詰める。</li>
+            <li>全体をポリ袋に入れ、軽く口を閉じて野菜室へ。</li>
+            <li>乾燥を防ぐことがポイント。</li>
+            </ol>
+        </article>
+
+        <!-- Card: じゃがいも -->
+        <article class="card room" data-keywords="じゃがいも 芋 野菜 根菜" data-type="room">
+            <h2>じゃがいも</h2>
+            <p class="storage">保存場所：<span class="label room">常温（冷暗所）</span></p>
+            <p class="period">保存目安：2〜3週間</p>
+            <ol class="steps">
+            <li>紙袋や新聞紙に包み、風通しのよい冷暗所で保存。</li>
+            <li>光を避けて芽の発生を防ぐ。</li>
+            <li>玉ねぎと一緒にすると発芽しやすくなるので別々に。</li>
+            </ol>
+        </article>
+
+        <!-- Card: ブロッコリー -->
+        <article class="card fridge" data-keywords="ブロッコリー 野菜" data-type="fridge">
+            <h2>ブロッコリー</h2>
+            <p class="storage">保存場所：<span class="label fridge">冷蔵</span></p>
+            <p class="period">保存目安：3〜4日（ゆでて冷凍なら約1か月）</p>
+            <ol class="steps">
+            <li>茎を少し切り落とし、水を吸わせてからポリ袋に入れる。</li>
+            <li>立てて保存すると鮮度が長持ち。</li>
+            <li>固めにゆでて冷凍保存も可能。</li>
+            </ol>
+        </article>
+
+        <!-- Card: トマト -->
+        <article class="card room" data-keywords="トマト 野菜 果菜" data-type="room">
+            <h2>トマト</h2>
+            <p class="storage">保存場所：<span class="label room">常温（追熟中）→冷蔵</span></p>
+            <p class="period">保存目安：常温で2〜3日、冷蔵で5日ほど</p>
+            <ol class="steps">
+            <li>熟していないものは常温で追熟。</li>
+            <li>赤くなったらヘタを下にしてポリ袋へ。</li>
+            <li>冷蔵庫の野菜室で保存。</li>
+            </ol>
+        </article>
+
+        <!-- Card: きのこ -->
+        <article class="card freezer" data-keywords="きのこ しめじ えのき 冷凍" data-type="freezer">
+            <h2>きのこ類</h2>
+            <p class="storage">保存場所：<span class="label freezer">冷凍</span></p>
+            <p class="period">保存目安：2〜3週間</p>
+            <ol class="steps">
+            <li>石づきを取り、小房に分ける。</li>
+            <li>そのまま冷凍用袋に入れ、空気を抜いて密閉。</li>
+            <li>使うときは凍ったまま調理可。</li>
+            </ol>
+        </article>
+        </section>
+
+        <section class="tips">
+        <h3>保存のポイント</h3>
+        <ul>
+            <li>乾燥と水分過多の両方に注意。適度な湿度を保つ。</li>
+            <li>ポリ袋や容器の口を完全に閉じず、通気性を確保。</li>
+            <li>購入後は早めに下処理し、余分な水分を拭き取る。</li>
+        </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <small>参考：味の素パーク「野菜の保存方法」｜本サイトは学習用に再構成しています。</small>
+    </footer>
+
+    <script>
+        const search = document.getElementById('search');
+        const filter = document.getElementById('filter');
+        const cards = Array.from(document.querySelectorAll('.card'));
+
+        function refresh() {
+        const q = search.value.trim().toLowerCase();
+        const f = filter.value;
+        cards.forEach(card => {
+            const keywords = card.dataset.keywords.toLowerCase();
+            const type = card.dataset.type;
+            const matchesQuery = q === '' || keywords.includes(q) || card.querySelector('h2').textContent.toLowerCase().includes(q);
+            const matchesFilter = (f === 'all') || (type === f);
+            card.style.display = (matchesQuery && matchesFilter) ? '' : 'none';
+        });
+        }
+
+        search.addEventListener('input', refresh);
+        filter.addEventListener('change', refresh);
+    </script>
+    </body>
+    </html>

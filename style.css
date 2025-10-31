@@ -168,14 +168,7 @@ form button:hover {
   border-bottom:1px solid #eef2f6;
 }
 
-.calendar tbody td {
-  height:120px;
-  vertical-align:top;
-  padding:8px;
-  border-right:1px solid #f3f6fa;
-  border-bottom:1px solid #f3f6fa;
-  position: relative;
-}
+
 
 .cell {
   display:flex;
@@ -275,6 +268,7 @@ form button:hover {
 }
 
 /* ----------------- ログイン画面 ----------------- */
+/* === ログイン画面用 === */
 .login-page {
   display: flex;
   align-items: center;

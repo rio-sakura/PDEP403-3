@@ -14,7 +14,7 @@
       <form id="loginForm">
         <input type="text" id="username" placeholder="ユーザー名" required>
         <input type="password" id="password" placeholder="パスワード" required>
-        <button type="submit">ログイン</button>
+        <button type="submit" id="loginBtn">ログイン</button>
       </form>
       <p id="loginError" class="error-message"></p>
       <p>アカウントがない場合は <span class="switch-link" id="showRegister">新規作成</span></p>
@@ -26,12 +26,15 @@
       <form id="registerForm">
         <input type="text" id="newUsername" placeholder="ユーザー名" required>
         <input type="password" id="newPassword" placeholder="パスワード" required>
-        <button type="submit">登録</button>
+        <button type="submit" id="registerBtn">登録</button>
       </form>
       <p id="registerMessage" class="error-message"></p>
       <p>すでにアカウントをお持ちですか？ <span class="switch-link" id="showLogin">ログイン</span></p>
     </div>
   </div>
+
+  <!-- ログインボタン音 -->
+  <audio id="clickSound" src="sound/status_tiryo1.mp3" preload="auto"></audio>
 
   <script src="login.js"></script>
 </body>

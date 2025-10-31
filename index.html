@@ -194,4 +194,15 @@
     });
   </script>
 </body>
+<button id="logoutBtn">ログアウト</button>
+
+<script>
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("userName");
+    window.location.href = "login/login.html";
+  });
+</script>
+
 </html>

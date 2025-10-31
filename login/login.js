@@ -18,54 +18,63 @@ document.getElementById("showLogin").addEventListener("click", () => {
   clickSound.play();
 });
 
-// ... (中略) ...
-
-// ログイン処理
-loginForm.addEventListener("submit", function(e) {
-  e.preventDefault();
-  clickSound.play(); // ← 音を鳴らす
-
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
-
-  const storedUser = JSON.parse(localStorage.getItem("userData"));
-
-  if (storedUser && storedUser.username === user && storedUser.password === pass) {
-    // ★★★ ここにユーザー名を保存する処理を追加 ★★★
-    localStorage.setItem("userName", user); // ユーザー名を 'userName' というキーで保存
-
-    localStorage.setItem("loggedIn", "true");
-    setTimeout(() => {
-      window.location.href = "../index.html";
-    }, 1500); // 音が鳴る時間を確保
-  } else {
-    loginError.textContent = "ユーザー名またはパスワードが間違っています。";
-  }
-});
-
-// ... (後略) ...
-
 // 新規登録処理
-registerForm.addEventListener("submit", function(e) {
+registerForm.addEventListener("submit", function (e) {
   e.preventDefault();
-  clickSound.play(); // ← 登録時も鳴らす
+  clickSound.play();
 
   const newUser = document.getElementById("newUsername").value.trim();
   const newPass = document.getElementById("newPassword").value.trim();
 
-  if (newUser && newPass) {
-    const userData = { username: newUser, password: newPass };
-    localStorage.setItem("userData", JSON.stringify(userData));
-
-    registerMessage.style.color = "green";
-    registerMessage.textContent = "登録が完了しました！ログインしてください。";
-
-    setTimeout(() => {
-      document.getElementById("showLogin").click();
-      registerMessage.textContent = "";
-    }, 3000);
-  } else {
+  if (!newUser || !newPass) {
     registerMessage.style.color = "red";
     registerMessage.textContent = "すべての項目を入力してください。";
+    return;
+  }
+
+  // 既存ユーザー取得
+  let allUsers = JSON.parse(localStorage.getItem("allUsers")) || {};
+
+  if (allUsers[newUser]) {
+    registerMessage.style.color = "red";
+    registerMessage.textContent = "このユーザー名はすでに存在します。";
+    return;
+  }
+
+  // 新規ユーザー登録
+  allUsers[newUser] = {
+    password: newPass,
+    data: {} // ← 各ユーザー専用データを格納する場所
+  };
+
+  localStorage.setItem("allUsers", JSON.stringify(allUsers));
+
+  registerMessage.style.color = "green";
+  registerMessage.textContent = "登録が完了しました！ログインしてください。";
+
+  setTimeout(() => {
+    document.getElementById("showLogin").click();
+    registerMessage.textContent = "";
+  }, 2000);
+});
+
+// ログイン処理
+loginForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+  clickSound.play();
+
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  const allUsers = JSON.parse(localStorage.getItem("allUsers")) || {};
+
+  if (allUsers[user] && allUsers[user].password === pass) {
+    localStorage.setItem("loggedIn", "true");
+    localStorage.setItem("userName", user); // ログイン中のユーザー名
+    setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 1000);
+  } else {
+    loginError.textContent = "ユーザー名またはパスワードが間違っています。";
   }
 });

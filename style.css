@@ -130,13 +130,13 @@ form button:hover {
 .message {
   background: #fefefe;
   border: 1px solid #ccc;
-  border-left: 6px solid #f39c12;
+  border-left: 6px solid #9ac3d8;
   padding: 10px;
   margin-bottom: 10px;
 }
 
 .message.read {
-  border-left-color: #2ecc71;
+  border-left-color: #c3b991;
   background: #fefefe;
 }
 
@@ -164,10 +164,10 @@ form button:hover {
   }
 }
 :root{
---bg:#f6f7fb;
+--bg:#f8f9f4;
 --card:#ffffff;
---accent:#2774e6;
---muted:#888;
+--accent:#4caf50;
+--muted:#777;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN",Meiryo, sans-serif;background:var(--bg);color:#111}
@@ -267,4 +267,50 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Ro
 
 .logout-btn:hover {
   background: #c0392b;
+}
+:root {
+  --bg: #fdf6f0;
+  --card: #fffaf5;
+  --accent: #e08c4e;
+  --muted: #a78c7b;
+}
+
+body {
+  background: var(--bg);
+  color: #5a4634;
+}
+
+.sidebar {
+  background-color: #fbe8d3;
+}
+
+nav a {
+  background: #fffaf5;
+  border: 1px solid #e2c6b2;
+  color: #5a4634;
+}
+
+nav a:hover {
+  background-color: #fde9d9;
+}
+
+form button {
+  background-color: #e08c4e;
+}
+
+form button:hover {
+  background-color: #c76f2f;
+}
+
+.tabs button.active {
+  background: #e08c4e;
+  color: white;
+}
+
+.logout-btn {
+  background: #d96b4d;
+}
+
+.logout-btn:hover {
+  background: #b95438;
 }

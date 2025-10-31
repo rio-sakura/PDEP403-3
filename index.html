@@ -1,3 +1,23 @@
+<script>
+  // ログインセッション確認
+  fetch("/check-session")
+    .then(res => res.json())
+    .then(data => {
+      if (!data.loggedIn) {
+        window.location.href = "login.html";
+      } else {
+        // ユーザー名を表示（既存の displayUserNameInHeader に連携も可）
+        document.querySelector(".header").textContent = `ようこそ、${data.user.name}さん`;
+      }
+    });
+
+  // ログアウト処理
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await fetch("/logout", { method: "POST" });
+    window.location.href = "login.html";
+  });
+</script>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,6 +27,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="splash">
+    <div class="logo">がぁぁぁ！！！！！</div>
+  </div>
   <!-- ログアウトボタン -->
   <button id="logoutBtn" class="logout-btn">ログアウト</button>
 
@@ -25,8 +48,8 @@
     <div class="header">EP403-3</div>
     <div class="content">
 
-      <!-- 以下はあなたの既存コードをそのまま -->
-      <!-- 省略（元のHTMLを挿入） -->
+      <!-- ↓ここからあなたの既存コード（カレンダー・期限管理など） -->
+
       <div class="schedule">
         <h2>賞味期限または、消費期限</h2>
         <form id="addItemForm">
@@ -48,7 +71,7 @@
 
         <section class="calendar-controls">
           <button id="todayBtn">今日</button>
-          </section>
+        </section>
 
         <table class="calendar" id="calendar">
           <thead>
@@ -56,8 +79,7 @@
               <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
             </tr>
           </thead>
-          <tbody id="calendarBody">
-            </tbody>
+          <tbody id="calendarBody"></tbody>
         </table>
 
         <footer class="legend">
@@ -67,7 +89,8 @@
         </footer>
         ※反映されない場合はリロードしてください
       </main>
-      
+
+      <!-- 消費期限リスト部分 -->
       <div class="messages">
         <h2>食材の消費期限（目安）</h2>
         <input type="text" id="searchBox" placeholder="名前で検索（例：きゅうり）">
@@ -77,6 +100,8 @@
           <button onclick="filterMessages('read')" id="tabRead">常温</button>
         </div>
         <div class="message-list" id="messageList">
+          <!-- ここに元のリストをそのまま置く -->
+           <div class="message-list" id="messageList">
           <div class="message unread">
             <div class="from">きゅうり</div>
             <div class="title">10日</div>
@@ -149,24 +174,36 @@
             <div class="from">トウモロコシ</div>
             <div class="title">1日</div>
           </div>
+          <!-- ...省略（あなたの既存要素を残す）... -->
         </div>
       </div>
-
     </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-    // 🔒 ログインチェック
-    if(localStorage.getItem("loggedIn") !== "true"){
-      window.location.href = "login.html";
+    // 🔒 ログイン状態チェック
+    // ログインしていない場合は login/login.html に戻す
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login/login.html";
     }
 
-    // 🔓 ログアウト
+    // 🔓 ログアウトボタン処理
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem("loggedIn");
-      window.location.href = "login.html";
+      window.location.href = "login/login.html";
     });
   </script>
 </body>
+<button id="logoutBtn">ログアウト</button>
+
+<script>
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("loggedIn");
+    localStorage.removeItem("userName");
+    window.location.href = "login/login.html";
+  });
+</script>
+
 </html>

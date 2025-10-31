@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>果物の詳細</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<button id="logoutBtn" class="logout-btn">ログアウト</button>
+<nav>
+      <a href="../index.html" id="fruitLink">ホームへ</a>
+</nav>
+<body>
+  <h1 id="fruit-name"></h1>
+  <img id="fruit-image" src="" alt="" style="width:200px; border-radius:10px;">
+  <p id="fruit-desc"></p>
+
+  <a href="index.html">← 一覧に戻る</a>
+
+  <script src="script.js"></script>
+  <script>
+    // URLのidパラメータを取得
+    const params = new URLSearchParams(window.location.search);
+    const fruitId = Number(params.get("id"));
+
+    // fruits は script.js で定義済み
+    const fruit = fruits.find(f => f.id === fruitId);
+
+    if (fruit) {
+      document.getElementById("fruit-name").textContent = fruit.name;
+      document.getElementById("fruit-image").src = fruit.image;
+      document.getElementById("fruit-desc").textContent = fruit.description;
+    } else {
+      document.body.innerHTML = "<h2>果物が見つかりません。</h2><a href='index.html'>戻る</a>";
+    }
+  </script>
+</body>
+</html>

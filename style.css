@@ -1,3 +1,7 @@
+/* =======================
+   基本スタイル
+   落ち着いたニュートラルな色調
+======================= */
 * {
   box-sizing: border-box;
 }
@@ -6,75 +10,113 @@ body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   overflow-x: hidden;
+  /* 落ち着いた明るいグレーに変更 */
+  background-color: #f7f9fb;
+  color: #2d3748; /* 暗めの文字色でコントラストを確保 */
 }
 
+/* =======================
+   上部ナビゲーションバー
+======================= */
 .sidebar {
-  position: fixed; /* ← 固定表示 */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 240px;
-  height: 100vh;
-  background-color: #eef4fa;
-  padding: 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+  /* 落ち着いたネイビー系に変更 */
+  background-color: #3a5369;
+  padding: 15px 40px;
+  /* シャドウを控えめに */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   z-index: 1000;
-  overflow-y: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
+/* 左側タイトル */
 .sidebar h3 {
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+  /* 明るい色に変更して背景色と対比 */
+  color: #f7f9fb;
+}
+
+/* ナビ部分を横並びに */
+nav {
+  display: flex;
+  gap: 24px;
 }
 
 nav a {
-  display: block;
-  width: 100%;
-  margin: 8px 0;
-  padding: 10px;
-  background: white;
-  border: 1px solid #ccc;
+  display: inline-block;
+  margin: 0;
+  padding: 8px 14px;
+  background: transparent;
+  border: none;
   border-radius: 5px;
   text-decoration: none;
-  color: #333;
-  font-size: 18px;
+  /* 明るい色に変更 */
+  color: #cbd5e0;
+  font-size: 16px;
+  transition: 0.2s;
 }
 
 nav a:hover {
-  background-color: #f0f8ff;
+  /* ホバー時は背景色と少し異なる落ち着いた色に */
+  background-color: #4a6378;
+  /* アクセントカラーを落ち着いたチャコールグレーに変更 */
+  color: #a0aec0;
 }
 
+/* =======================
+   メイン領域
+======================= */
 .main {
-  margin-left: 240px; /* ← sidebar の幅に合わせて余白確保 */
+  margin-left: 0;
+  margin-top: 80px; /* ヘッダー分の余白 */
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
 .header {
-  background: #f9f9f9;
+  /* ナビバーと同じ落ち着いたネイビー系 */
+  background: #f7f9fb;
   padding: 15px 20px;
-  border-bottom: 1px solid #ccc;
+  /* 落ち着いたボーダー色 */
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .content {
   padding: 20px;
 }
 
-.schedule h2 {
+/* =======================
+   スケジュール・メッセージ等
+======================= */
+.schedule h2,
+.messages h2 {
   font-size: 20px;
+  color: #4a5568; /* 落ち着いた見出し色 */
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  background-color: #ffffff;
 }
 
 .schedule-table th,
 .schedule-table td {
-  border: 1px solid #ccc;
+  border: 1px solid #e2e8f0;
   padding: 8px;
   text-align: left;
 }
@@ -90,19 +132,17 @@ form input {
 
 form button {
   padding: 5px 10px;
-  background-color: #3498db;
+  /* 落ち着いたアクセントカラーに変更 */
+  background-color: #4a5568;
   color: white;
   border: none;
   border-radius: 3px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 form button:hover {
-  background-color: #2980b9;
-}
-
-.messages h2 {
-  font-size: 20px;
+  background-color: #3f4a5b;
 }
 
 .tabs {
@@ -113,13 +153,15 @@ form button:hover {
   margin-right: 10px;
   padding: 6px 12px;
   border: none;
-  background: #e0e0e0;
+  /* 背景を落ち着いたライトグレーに */
+  background: #e2e8f0;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .tabs button.active {
-  background: #3498db;
+  /* アクティブタブの背景色を落ち着いたアクセントカラーに */
+  background: #4a5568;
   color: white;
 }
 
@@ -128,21 +170,25 @@ form button:hover {
 }
 
 .message {
-  background: #fefefe;
-  border: 1px solid #ccc;
-  border-left: 6px solid #f39c12;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  /* 未読メッセージの強調色を落ち着いたオレンジ系に */
+  border-left: 6px solid #d69e2e;
   padding: 10px;
   margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .message.read {
-  border-left-color: #2ecc71;
-  background: #fefefe;
+  /* 既読メッセージの強調色を落ち着いたグリーン系に */
+  border-left-color: #38a169;
+  background: #fcfdfe;
 }
 
 .message .from {
   font-size: 18px;
-  color: #db4b0e;
+  /* 送信者名を落ち着いた赤茶系に */
+  color: #c53030;
 }
 
 .message .title {
@@ -150,59 +196,176 @@ form button:hover {
   margin-top: 5px;
 }
 
-/* 📱 モバイル対応: サイドバーを上部に表示（任意） */
-@media (max-width: 600px) {
-  .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    box-shadow: none;
-  }
-
-  .main {
-    margin-left: 0;
-  }
+/* =======================
+   カレンダー部分
+   アクセントカラーと背景色を全体と統一
+======================= */
+:root {
+  --bg: #f7f9fb; /* 全体の背景と統一 */
+  --card: #ffffff;
+  --accent: #4a5568; /* 落ち着いたアクセントカラー */
+  --muted: #718096; /* ミュートカラー */
 }
-:root{
---bg:#f6f7fb;
---card:#ffffff;
---accent:#2774e6;
---muted:#888;
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Kaku Gothic ProN",Meiryo, sans-serif;background:var(--bg);color:#111}
-.calendar-app{max-width:720px;margin:28px auto;padding:18px;background:var(--card);border-radius:12px;box-shadow:0 6px 18px rgba(20,20,30,0.06)}
-.calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.calendar-header button{background:none;border:1px solid #e6e9ef;padding:6px 10px;border-radius:8px;cursor:pointer}
-.month-year{font-size:1.25rem;font-weight:600}
-.calendar-controls{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.calendar-controls button, .calendar-controls select{padding:6px 8px;border-radius:8px;border:1px solid #e6e9ef;background:white}
-.calendar{width:100%;border-collapse:collapse}
-.calendar thead th{text-align:center;padding:8px 6px;font-weight:600;color:var(--muted);border-bottom:1px solid #eef2f6}
-.calendar tbody td{height:84px;vertical-align:top;padding:6px;border-right:1px solid #f3f6fa;border-bottom:1px solid #f3f6fa}
-.calendar tbody tr td:last-child{border-right:0}
-.cell{display:flex;flex-direction:column;height:100%}
-.date-number{font-weight:600;padding:4px;border-radius:6px;width:28px;text-align:center}
-.date-number.today{background:var(--accent);color:white}
-.date-number.inactive{color:#bfc7d8;font-weight:500;background:transparent}
-.day-content{margin-top:6px;flex:1}
-.calendar tbody td{cursor:default}
-.calendar tbody td:hover{background:#fbfdff}
-.legend{margin-top:12px;color:var(--muted);font-size:0.95rem;display:flex;gap:12px}
-.legend-item{display:inline-flex;align-items:center;gap:8px}
-.today-dot::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent)}
-.inactive::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;background:#d6dbe6}
 
-
-@media (max-width:520px){
-.calendar tbody td{height:68px;padding:4px}
-.month-year{font-size:1rem}
+.calendar-app {
+  max-width: 720px;
+  margin: 28px auto;
+  padding: 18px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(20, 20, 30, 0.06);
 }
-/* === ログイン画面用 === */
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendar-header button {
+  background: none;
+  /* ボーダーを落ち着いたグレーに */
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #718096;
+  transition: background-color 0.2s;
+}
+.calendar-header button:hover {
+  background-color: #f7f9fb;
+}
+
+.month-year {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-controls button,
+.calendar-controls select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: white;
+  color: #4a5568;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar thead th {
+  text-align: center;
+  padding: 8px 6px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendar tbody td {
+  height: 84px;
+  vertical-align: top;
+  padding: 6px;
+  border-right: 1px solid #edf2f7;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.calendar tbody tr td:last-child {
+  border-right: 0;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.date-number {
+  font-weight: 600;
+  padding: 4px;
+  border-radius: 6px;
+  width: 28px;
+  text-align: center;
+}
+
+.date-number.today {
+  /* 今日の日付をアクセントカラーで表示 */
+  background: var(--accent);
+  color: white;
+}
+
+.date-number.inactive {
+  /* 非アクティブな日を薄いグレーに */
+  color: #a0aec0;
+  font-weight: 500;
+  background: transparent;
+}
+
+.day-content {
+  margin-top: 6px;
+  flex: 1;
+}
+
+.calendar tbody td {
+  cursor: default;
+}
+
+.calendar tbody td:hover {
+  background: #fcfdfe;
+}
+
+.legend {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  display: flex;
+  gap: 12px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.today-dot::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  /* ドットもアクセントカラー */
+  background: var(--accent);
+}
+
+.inactive::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  /* 非アクティブな色に合わせる */
+  background: #e2e8f0;
+}
+
+/* =======================
+   ログインページ
+======================= */
 .login-page {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* 背景色をニュートラルな明るいグレーに */
   background: #eef4fa;
   height: 100vh;
   margin: 0;
@@ -212,13 +375,14 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Ro
   background: white;
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 300px;
   text-align: center;
 }
 
 .login-container h2 {
   margin-bottom: 20px;
+  color: #4a5568;
 }
 
 .login-container input {
@@ -233,90 +397,112 @@ html,body{height:100%;margin:0;font-family:system-ui,-apple-system,"Segoe UI",Ro
 .login-container button {
   width: 100%;
   padding: 10px;
-  background-color: #3498db;
+  /* 落ち着いたアクセントカラー */
+  background-color: #4a5568;
   color: white;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .login-container button:hover {
-  background-color: #2980b9;
+  background-color: #3f4a5b;
 }
 
 .error-message {
-  color: red;
+  color: #c53030; /* 落ち着いた赤色 */
   font-size: 14px;
   margin-top: 10px;
 }
 
-/* === ログアウトボタン === */
+/* =======================
+   ログアウトボタン
+======================= */
 .logout-btn {
   position: fixed;
-  top: 15px;
-  right: 15px;
-  padding: 8px 14px;
-  background: #e74c3c;
-  color: white;
+  right: 25px;
+  bottom: 25px;
+  /* 落ち着いた赤色 */
+  background-color: #e53e3e;
+  color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 30px;
+  padding: 8px 16px;
+  font-size: 13px;
   cursor: pointer;
-  z-index: 2000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+  z-index: 1100;
 }
-
 .logout-btn:hover {
-  background: #c0392b;
+  background-color: #c53030;
+  transform: translateY(-1px);
 }
 
+/* =======================
+   スプラッシュ画面
+   落ち着いた色とアニメーションの抑制
+======================= */
 #splash {
-    /* 画面全体に広げる */
-    position: fixed; /* または absolute */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    
-    /* 他の要素の上に表示する */
-    z-index: 9999; 
-    
-    /* 背景色（例: 白）*/
-    background-color: rgb(0, 90, 24); 
-    
-    /* 中央揃えの例 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* 必要に応じて他のスタイル（テキストの色、フォントなど）を追加 */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  /* 落ち着いたダークブルー/ネイビーに変更 */
+  background-color: #3a5369;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* 拡大縮小アニメ */
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
+/* pulseとshakeアニメーションを削除し、落ち着いたアニメーションに置き換え */
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* 揺れアニメ */
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(3deg); }
-  50% { transform: rotate(0deg); }
-  75% { transform: rotate(-3deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* フェードアウト用 */
 #splash.fade-out {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 0.5s ease-out; /* フェードアウトのトランジション */
 }
 
 .logo {
   font-size: 120px;
   color: #fff;
-  animation: pulse 2s infinite ease-in-out, shake 1.5s infinite ease-in-out;
+  /* 控えめなフェードイン/スケールアニメーションのみ適用 */
+  animation: fade-in 1.5s ease-out;
+}
+
+/* =======================
+   レスポンシブ対応
+======================= */
+@media (max-width: 600px) {
+  .sidebar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .main {
+    margin-top: 140px;
+  }
+
+  .calendar tbody td {
+    height: 68px;
+    padding: 4px;
+  }
+
+  .month-year {
+    font-size: 1rem;
+  }
 }

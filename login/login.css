@@ -50,3 +50,14 @@ button:hover {
   cursor: pointer;
   text-decoration: underline;
 }
+
+.ms-login-button {
+  background-color: #2F2F91;
+  color: white;
+  border: none;
+  margin-top: 10px;
+}
+
+.ms-login-button:hover {
+  background-color: #1A1A70;
+}

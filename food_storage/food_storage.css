@@ -1,0 +1,142 @@
+    /* -----------------------------
+    基本レイアウト
+    ----------------------------- */
+    body {
+    font-family: "Noto Sans JP", sans-serif;
+    background: #fafafa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    }
+
+    .site-header {
+    background: #4caf50;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    }
+
+    .container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1rem;
+    }
+
+    /* -----------------------------
+    スライダー全体
+    ----------------------------- */
+    .slider {
+    position: relative;
+    overflow: hidden;
+    }
+
+    .cards {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 150%;
+
+    }
+
+    .card {
+    min-width: 200%;
+    box-sizing: border-box;
+    background: #fff;
+    margin: 0 0.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+    color: #2e7d32;
+    }
+
+    .card .storage {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    }
+
+    .card .period {
+    margin-bottom: 0.8rem;
+    color: #555;
+    }
+
+    .card ol {
+    padding-left: 1.2rem;
+    line-height: 1.6;
+    }
+
+    /* -----------------------------
+    保存場所のラベル
+    ----------------------------- */
+    .label {
+    padding: 0.2em 0.6em;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.9rem;
+    }
+
+    .label.fridge {
+    background: #42a5f5;
+    }
+
+    .label.freezer {
+    background: #7e57c2;
+    }
+
+    .label.room {
+    background: #ffb300;
+    }
+
+    /* -----------------------------
+    スライドナビゲーション
+    ----------------------------- */
+    .slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(76,175,80,0.8);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem 0.8rem;
+    z-index: 10;
+    transition: background-color 0.3s;
+    }
+
+    .slider-btn:hover {
+    background: rgba(56,142,60,0.9);
+    }
+
+    .slider-btn.prev {
+    left: 10px;
+    }
+
+    .slider-btn.next {
+    right: 10px;
+    }
+
+    /* -----------------------------
+    保存のポイント
+    ----------------------------- */
+    .tips {
+    margin-top: 2rem;
+    background: #e8f5e9;
+    padding: 1rem;
+    border-radius: 10px;
+    }
+
+    .tips h3 {
+    margin-top: 0;
+    color: #388e3c;
+    }
+
+    .tips li {
+    line-height: 1.6;
+    }
+

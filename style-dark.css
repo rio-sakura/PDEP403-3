@@ -1,0 +1,471 @@
+/* =======================
+   基本スタイル
+   カラフル完全版
+======================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #fef6f6; /* 明るいピンク系背景 */
+  color: #1a202c; /* メイン文字色 */
+}
+
+/* =======================
+   サイドバー
+======================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background-color: #ff6b6b; /* 明るいレッド系 */
+  padding: 15px 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+}
+
+nav {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 14px;
+  background: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #ff6b6b;
+  font-size: 16px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+nav a:hover {
+  background-color: #ffe3e3;
+  color: #ff3b3b;
+}
+
+/* =======================
+   メイン領域
+======================= */
+.main {
+  margin-left: 0;
+  margin-top: 80px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #ffe3e3; /* ヘッダー背景色 */
+  padding: 15px 20px;
+  border-bottom: 2px solid #ff6b6b;
+  font-weight: 600;
+  font-size: 18px;
+  color: #ff3b3b;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* =======================
+   スケジュール・メッセージ
+======================= */
+.schedule h2,
+.messages h2 {
+  font-size: 20px;
+  color: #ff6b6b;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #fff5f5;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #ffb3b3;
+  padding: 8px;
+  text-align: left;
+}
+
+form input {
+  margin-right: 8px;
+  padding: 5px;
+  border: 1px solid #ffb3b3;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 5px 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: #ff3b3b;
+}
+
+.tabs button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: none;
+  background: #ffd6d6;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.tabs button.active {
+  background: #ff6b6b;
+  color: white;
+}
+
+.message-list {
+  margin-top: 15px;
+}
+
+.message {
+  background: #fff0f0;
+  border-left: 6px solid #ff9f43; /* 未読オレンジ */
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.message.read {
+  border-left-color: #1dd1a1; /* 既読グリーン */
+  background: #f0fff4;
+}
+
+.message .from {
+  font-size: 18px;
+  color: #ee5253; /* 赤茶系 */
+}
+
+.message .title {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* =======================
+   カレンダー
+======================= */
+:root {
+  --bg: #fef6f6;
+  --card: #fff0f0;
+  --accent: #ff6b6b;
+  --muted: #ff9f43;
+}
+
+.calendar-app {
+  max-width: 720px;
+  margin: 28px auto;
+  padding: 18px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(255, 107, 107, 0.2);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendar-header button {
+  background: none;
+  border: 1px solid #ffb3b3;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #ff6b6b;
+}
+
+.calendar-header button:hover {
+  background-color: #ffe3e3;
+}
+
+.month-year {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ff3b3b;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-controls button,
+.calendar-controls select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #ffb3b3;
+  background: white;
+  color: #ff6b6b;
+  cursor: pointer;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar thead th {
+  text-align: center;
+  padding: 8px 6px;
+  font-weight: 600;
+  color: #ff6b6b;
+  border-bottom: 2px solid #ff9f43;
+}
+
+.calendar tbody td {
+  width: 14.28%;
+  height: 84px;
+  vertical-align: top;
+  padding: 4px;
+  border: 1px solid #ffe3e3;
+  background: #fff5f5;
+  cursor: default;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.date-number {
+  font-weight: 600;
+  padding: 4px;
+  border-radius: 6px;
+  width: 28px;
+  text-align: center;
+  background: #ffe3e3;
+  color: #ff3b3b;
+}
+
+.date-number.today {
+  background: #ff6b6b;
+  color: white;
+}
+
+.date-number.inactive {
+  color: #ffc1c1;
+  font-weight: 500;
+  background: transparent;
+}
+
+.day-content {
+  margin-top: 6px;
+  flex: 1;
+}
+
+.day-content .event {
+  background: #ff6b6b;
+  color: white;
+  font-size: 13px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calendar tbody td:hover {
+  background: #ffe3e3;
+}
+
+.legend {
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.today-dot::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff6b6b;
+}
+
+.inactive::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: #ffe3e3;
+}
+
+.event-dot-legend::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 6px;
+  background: #ff6b6b;
+}
+
+/* =======================
+   ログイン画面
+======================= */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff0f0;
+  height: 100vh;
+}
+
+.login-container {
+  background: #ffe3e3;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+  width: 300px;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #ff6b6b;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #ffb3b3;
+  border-radius: 6px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff6b6b;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #ff3b3b;
+}
+
+.error-message {
+  color: #ee5253;
+}
+
+/* =======================
+   ログアウトボタン
+======================= */
+.logout-btn {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border-radius: 30px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+.logout-btn:hover {
+  background-color: #ff3b3b;
+  transform: translateY(-1px);
+}
+
+/* =======================
+   スプラッシュ画面
+======================= */
+#splash {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ff6b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-size: 120px;
+  color: #fff;
+  animation: fade-in 1.5s ease-out;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* =======================
+   レスポンシブ
+======================= */
+@media (max-width: 600px) {
+  .sidebar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+  nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .main {
+    margin-top: 140px;
+  }
+  .calendar tbody td {
+    height: 68px;
+    padding: 4px;
+  }
+  .month-year {
+    font-size: 1rem;
+  }
+}

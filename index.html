@@ -1,40 +1,33 @@
-<script>
-  // ログインセッション確認
-  fetch("/check-session")
-    .then(res => res.json())
-    .then(data => {
-      if (!data.loggedIn) {
-        window.location.href = "login.html";
-      } else {
-        // ユーザー名を表示（既存の displayUserNameInHeader に連携も可）
-        document.querySelector(".header").textContent = `ようこそ、${data.user.name}さん`;
-      }
-    });
-
-  // ログアウト処理
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await fetch("/logout", { method: "POST" });
-    window.location.href = "login.html";
-  });
-</script>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>PD後学期</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link id="themeStylesheet" rel="stylesheet" href="style.css">
 </head>
+
 <body>
+  <!-- 起動画面 -->
   <div id="splash">
     <div class="logo">わ”ぁぁぁぁぁぁぁｌ！！！！！</div>
   </div>
+
   <!-- ログアウトボタン -->
   <button id="logoutBtn" class="logout-btn">ログアウト</button>
 
+  <!-- テーマ切り替えボタン -->
+  
+
+  <!-- サイドバー -->
   <div class="sidebar">
     <h3>困ったら</h3>
+    <div class="theme-buttons" style="text-align:center; margin: 10px 0;">
+    <button onclick="changeTheme('light')">寒色</button>
+    <button onclick="changeTheme('dark')">？</button>
+    <button onclick="changeTheme('natural')">暖色</button>
+  </div>
     <nav>
       <a href="detail/index.html" id="fruitLink">果物図鑑へ</a>
       <a href="https://cookpad.com/jp">食材の調理方法</a>
@@ -44,17 +37,17 @@
     </nav>
   </div>
 
+  <!-- メイン部分 -->
   <div class="main">
     <div class="header">EP403-3</div>
     <div class="content">
 
-      <!-- ↓ここからあなたの既存コード（カレンダー・期限管理など） -->
-
+      <!-- 食材登録フォーム -->
       <div class="schedule">
         <h2>賞味期限または、消費期限</h2>
         <form id="addItemForm">
           <input type="text" id="itemName" placeholder="食材名" required>
-          <input type="date" id="itemDate" placeholder="期限" required>
+          <input type="date" id="itemDate" required>
           <button type="submit">追加</button>
         </form>
         <table class="schedule-table" id="scheduleTable">
@@ -62,6 +55,7 @@
         </table>
       </div>
 
+      <!-- カレンダー部分 -->
       <main class="calendar-app">
         <header class="calendar-header">
           <button id="prevBtn" aria-label="前の月">◀</button>
@@ -90,7 +84,7 @@
         ※反映されない場合はリロードしてください
       </main>
 
-      <!-- 消費期限リスト部分 -->
+      <!-- 消費期限リスト -->
       <div class="messages">
         <h2>食材の消費期限（目安）</h2>
         <input type="text" id="searchBox" placeholder="名前で検索（例：きゅうり）">
@@ -99,111 +93,72 @@
           <button onclick="filterMessages('unread')" id="tabUnread">冷蔵庫</button>
           <button onclick="filterMessages('read')" id="tabRead">常温</button>
         </div>
+
         <div class="message-list" id="messageList">
-          <!-- ここに元のリストをそのまま置く -->
-           <div class="message-list" id="messageList">
-          <div class="message unread">
-            <div class="from">きゅうり</div>
-            <div class="title">10日</div>
-          </div>
-          <div class="message unread">
-            <div class="from">じゃがいも</div>
-            <div class="title">NG</div>
-          </div>
-          <div class="message unread">
-            <div class="from">玉ねぎ</div>
-            <div class="title">1〜2週間</div>
-          </div>
-          <div class="message unread">
-            <div class="from">にんじん</div>
-            <div class="title">2〜3週間（新聞紙などに包むとより長持ち）</div>
-          </div>
-          <div class="message unread">
-            <div class="from">ピーマン、パプリカ</div>
-            <div class="title">1週間ほど（ビニール袋に入れて野菜室）</div>
-          </div>
-          <div class="message unread">
-            <div class="from">きゃべつ</div>
-            <div class="title">2〜3週間（芯をくり抜いて湿らせたキッチンペーパーを入れると◎）</div>
-          </div>
-          <div class="message unread">
-            <div class="from">トマト</div>
-            <div class="title">完熟後は3〜4日（野菜室で）</div>
-          </div>
-          <div class="message unread">
-            <div class="from">ほうれん草、葉物</div>
-            <div class="title">2〜3日（湿らせたキッチンペーパーで包む）</div>
-          </div>
-          <div class="message unread">
-            <div class="from">とうもころし</div>
-            <div class="title">2~3日</div>
-          </div>
-          <div class="message read">
-            <div class="from">じゃがいも</div>
-            <div class="title">2〜4週間（風通しのよい涼しい場所）</div>
-          </div>
-          <div class="message read">
-            <div class="from">玉ねぎ</div>
-            <div class="title">1〜2か月（湿気を避けて保存）</div>
-          </div>
-          <div class="message read">
-            <div class="from">にんじん</div>
-            <div class="title">数日（夏場は不向き）</div>
-          </div>
-          <div class="message read">
-            <div class="from">ピーマン、パプリカ</div>
-            <div class="title">2〜3日（あまりおすすめしません）</div>
-          </div>
-          <div class="message read">
-            <div class="from">きゃべつ</div>
-            <div class="title">冬場であれば1週間ほど</div>
-          </div>
-          <div class="message read">
-            <div class="from">きゅうり</div>
-            <div class="title">1〜2日（暑い時期は厳しい）</div>
-          </div>
-          <div class="message read">
-            <div class="from">トマト</div>
-            <div class="title">完熟前なら3〜5日（風通しのよい場所）</div>
-          </div>
-          <div class="message read">
-            <div class="from">ほうれん草、葉物</div>
-            <div class="title">夏場は数時間で劣化することも</div>
-          </div>
-          <div class="message read">
-            <div class="from">トウモロコシ</div>
-            <div class="title">1日</div>
-          </div>
-          <!-- ...省略（あなたの既存要素を残す）... -->
+          <!-- 冷蔵向き -->
+          <div class="message unread"><div class="from">きゅうり</div><div class="title">10日</div></div>
+          <div class="message unread"><div class="from">じゃがいも</div><div class="title">NG</div></div>
+          <div class="message unread"><div class="from">玉ねぎ</div><div class="title">1〜2週間</div></div>
+          <div class="message unread"><div class="from">にんじん</div><div class="title">2〜3週間</div></div>
+          <div class="message unread"><div class="from">ピーマン</div><div class="title">1週間</div></div>
+
+          <!-- 常温向き -->
+          <div class="message read"><div class="from">じゃがいも</div><div class="title">2〜4週間</div></div>
+          <div class="message read"><div class="from">玉ねぎ</div><div class="title">1〜2か月</div></div>
+          <div class="message read"><div class="from">にんじん</div><div class="title">数日（夏場は不向き）</div></div>
+          <div class="message read"><div class="from">トマト</div><div class="title">完熟前なら3〜5日</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- ================================
+       ✅ スクリプト（すべて最後に集約）
+  ================================= -->
   <script>
-    // 🔒 ログイン状態チェック
-    // ログインしていない場合は login/login.html に戻す
-    if (localStorage.getItem("loggedIn") !== "true") {
-      window.location.href = "login/login.html";
+    // 🎨 テーマ切替
+    function changeTheme(theme) {
+      const link = document.getElementById("themeStylesheet");
+      link.href = `style-${theme}.css`;
+      localStorage.setItem("theme", theme);
     }
 
-    // 🔓 ログアウトボタン処理
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("loggedIn");
-      window.location.href = "login/login.html";
+    // 📅 ロード時処理
+    window.addEventListener("DOMContentLoaded", async () => {
+      // 前回のテーマ復元
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.getElementById("themeStylesheet").href = `style-${savedTheme}.css`;
+
+      // ログイン状態確認
+      try {
+        const res = await fetch("/check-session");
+        const data = await res.json();
+        if (!data.loggedIn) {
+          window.location.href = "login/login.html";
+          return;
+        } else {
+          document.querySelector(".header").textContent = `ようこそ、${data.user.name}さん`;
+        }
+      } catch {
+        // ローカル環境用フォールバック
+        if (localStorage.getItem("loggedIn") !== "true") {
+          window.location.href = "login/login.html";
+          return;
+        }
+      }
+
+      // ログアウトボタン処理
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        try {
+          await fetch("/logout", { method: "POST" });
+        } catch {}
+        localStorage.removeItem("loggedIn");
+        localStorage.removeItem("userName");
+        window.location.href = "login/login.html";
+      });
     });
   </script>
+
+  <script src="script.js"></script>
 </body>
-<!-- <button id="logoutBtn">ログアウト</button> -->
-
-<script>
-  const logoutBtn = document.getElementById("logoutBtn");
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("loggedIn");
-    localStorage.removeItem("userName");
-    window.location.href = "login/login.html";
-  });
-</script>
-
 </html>

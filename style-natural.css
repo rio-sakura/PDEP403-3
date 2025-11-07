@@ -1,0 +1,425 @@
+/* =======================
+   基本スタイル
+   ニュートラル＆落ち着いたカラー
+======================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: #5a4634;
+}
+
+/* =======================
+   サイドバー / ナビゲーション
+======================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background-color: #fbe8d3;
+  padding: 15px 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: bold;
+  color: #5a4634;
+}
+
+nav {
+  display: flex;
+  gap: 24px;
+}
+
+nav a {
+  display: inline-block;
+  margin: 0;
+  padding: 8px 14px;
+  background: #fffaf5;
+  border: 1px solid #e2c6b2;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #5a4634;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+nav a:hover {
+  background-color: #fde9d9;
+}
+
+/* =======================
+   メイン領域
+======================= */
+.main {
+  margin-left: 0;
+  margin-top: 80px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: #fdf6f0;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e2c6b2;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* =======================
+   スケジュール・メッセージ
+======================= */
+.schedule h2,
+.messages h2 {
+  font-size: 20px;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #fffaf5;
+}
+
+.schedule-table th,
+.schedule-table td {
+  border: 1px solid #e2c6b2;
+  padding: 8px;
+  text-align: left;
+}
+
+form {
+  margin-bottom: 10px;
+}
+
+form input {
+  margin-right: 8px;
+  padding: 5px;
+}
+
+form button {
+  padding: 5px 10px;
+  background-color: #e08c4e;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: #c76f2f;
+}
+
+.tabs {
+  margin-top: 10px;
+}
+
+.tabs button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border: none;
+  background: #fffaf5;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #e08c4e;
+  color: white;
+}
+
+.message-list {
+  margin-top: 15px;
+}
+
+.message {
+  background: #fffaf5;
+  border: 1px solid #e2c6b2;
+  border-left: 6px solid #9ac3d8;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message.read {
+  border-left-color: #c3b991;
+  background: #fffaf5;
+}
+
+.message .from {
+  font-size: 18px;
+  color: #db4b0e;
+}
+
+.message .title {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* =======================
+   カレンダー
+======================= */
+:root {
+  --bg: #fdf6f0;
+  --card: #fffaf5;
+  --accent: #e08c4e;
+  --muted: #a78c7b;
+}
+
+.calendar-app {
+  max-width: 720px;
+  margin: 28px auto;
+  padding: 18px;
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(20,20,30,0.06);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.calendar-header button {
+  background: none;
+  border: 1px solid #e2c6b2;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.month-year {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #5a4634;
+}
+
+.calendar-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-controls button,
+.calendar-controls select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #e2c6b2;
+  background: white;
+  color: #5a4634;
+}
+
+.calendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar thead th {
+  text-align: center;
+  padding: 8px 6px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid #e2c6b2;
+}
+
+.calendar tbody td {
+  height: 84px;
+  vertical-align: top;
+  padding: 6px;
+  border-right: 1px solid #f3f6fa;
+  border-bottom: 1px solid #f3f6fa;
+}
+
+.calendar tbody tr td:last-child {
+  border-right: 0;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.date-number {
+  font-weight: 600;
+  padding: 4px;
+  border-radius: 6px;
+  width: 28px;
+  text-align: center;
+}
+
+.date-number.today {
+  background: var(--accent);
+  color: white;
+}
+
+.date-number.inactive {
+  color: #bfc7d8;
+  font-weight: 500;
+  background: transparent;
+}
+
+.day-content {
+  margin-top: 6px;
+  flex: 1;
+}
+
+.calendar tbody td:hover {
+  background: #fbfdff;
+}
+
+.legend {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  display: flex;
+  gap: 12px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.today-dot::before {
+  content:"";
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background: var(--accent);
+}
+
+.inactive::before {
+  content:"";
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:2px;
+  background:#d6dbe6;
+}
+
+/* =======================
+   ログイン画面
+======================= */
+.login-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4fa;
+  height: 100vh;
+  margin: 0;
+}
+
+.login-container {
+  background: var(--card);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #5a4634;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #e2c6b2;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #e08c4e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #c76f2f;
+}
+
+.error-message {
+  color: #c53030;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* =======================
+   ログアウトボタン
+======================= */
+.logout-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 8px 14px;
+  background: #d96b4d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 2000;
+}
+
+.logout-btn:hover {
+  background: #b95438;
+}
+
+/* =======================
+   レスポンシブ対応
+======================= */
+@media (max-width: 600px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .calendar tbody td {
+    height: 68px;
+    padding: 4px;
+  }
+
+  .month-year {
+    font-size: 1rem;
+  }
+}

@@ -453,17 +453,35 @@ form button:hover {
   height: 100%;
   z-index: 9999;
   /* 落ち着いたダークブルー/ネイビーに変更 */
-  background-color: #3a5369;
+  background-color: #5d80ca;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 /* pulseとshakeアニメーションを削除し、落ち着いたアニメーションに置き換え */
-@keyframes fade-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+@keyframes splash-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(10deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.95) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
 }
+
 
 #splash.fade-out {
   opacity: 0;
@@ -474,8 +492,7 @@ form button:hover {
 .logo {
   font-size: 120px;
   color: #fff;
-  /* 控えめなフェードイン/スケールアニメーションのみ適用 */
-  animation: fade-in 1.5s ease-out;
+  animation: splash-entrance 2s ease-out;
 }
 
 /* =======================

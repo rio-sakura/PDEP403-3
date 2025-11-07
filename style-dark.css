@@ -428,21 +428,48 @@ form button:hover {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 9999;
+  /* 落ち着いたダークブルー/ネイビーに変更 */
   background-color: #ff6b6b;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* pulseとshakeアニメーションを削除し、落ち着いたアニメーションに置き換え */
+@keyframes splash-entrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+  }
+  25% {
+    opacity: 0.7;
+    transform: scale(1.1) rotate(10deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.95) rotate(-5deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(3deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+
+#splash.fade-out {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out; /* フェードアウトのトランジション */
+}
+
 .logo {
   font-size: 120px;
   color: #fff;
-  animation: fade-in 1.5s ease-out;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  animation: splash-entrance 2s ease-out;
 }
 
 /* =======================

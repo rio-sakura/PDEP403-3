@@ -1,6 +1,6 @@
 /* =======================
    基本スタイル
-   カラフル完全版
+   ニュートラル＆落ち着いたカラー
 ======================= */
 * {
   box-sizing: border-box;
@@ -13,12 +13,12 @@ body {
   flex-direction: column;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: #fef6f6; /* 明るいピンク系背景 */
-  color: #1a202c; /* メイン文字色 */
+  background: var(--bg);
+  color: #5a4634;
 }
 
 /* =======================
-   サイドバー
+   サイドバー / ナビゲーション
 ======================= */
 .sidebar {
   position: fixed;
@@ -26,9 +26,9 @@ body {
   left: 0;
   width: 100%;
   height: auto;
-  background-color: #ff6b6b; /* 明るいレッド系 */
+  background-color: #fbe8d3;
   padding: 15px 40px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@ body {
   margin: 0;
   font-size: 22px;
   font-weight: bold;
-  color: #fff;
+  color: #5a4634;
 }
 
 nav {
@@ -51,18 +51,17 @@ nav a {
   display: inline-block;
   margin: 0;
   padding: 8px 14px;
-  background: #fff;
-  border-radius: 6px;
+  background: #fffaf5;
+  border: 1px solid #e2c6b2;
+  border-radius: 5px;
   text-decoration: none;
-  color: #ff6b6b;
+  color: #5a4634;
   font-size: 16px;
-  font-weight: 600;
   transition: 0.2s;
 }
 
 nav a:hover {
-  background-color: #ffe3e3;
-  color: #ff3b3b;
+  background-color: #fde9d9;
 }
 
 /* =======================
@@ -77,12 +76,9 @@ nav a:hover {
 }
 
 .header {
-  background: #ffe3e3; /* ヘッダー背景色 */
+  background: #fdf6f0;
   padding: 15px 20px;
-  border-bottom: 2px solid #ff6b6b;
-  font-weight: 600;
-  font-size: 18px;
-  color: #ff3b3b;
+  border-bottom: 1px solid #e2c6b2;
 }
 
 .content {
@@ -95,57 +91,60 @@ nav a:hover {
 .schedule h2,
 .messages h2 {
   font-size: 20px;
-  color: #ff6b6b;
 }
 
 .schedule-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-  background-color: #fff5f5;
+  background-color: #fffaf5;
 }
 
 .schedule-table th,
 .schedule-table td {
-  border: 1px solid #ffb3b3;
+  border: 1px solid #e2c6b2;
   padding: 8px;
   text-align: left;
+}
+
+form {
+  margin-bottom: 10px;
 }
 
 form input {
   margin-right: 8px;
   padding: 5px;
-  border: 1px solid #ffb3b3;
-  border-radius: 4px;
 }
 
 form button {
   padding: 5px 10px;
-  background-color: #ff6b6b;
+  background-color: #e08c4e;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 form button:hover {
-  background-color: #ff3b3b;
+  background-color: #c76f2f;
+}
+
+.tabs {
+  margin-top: 10px;
 }
 
 .tabs button {
   margin-right: 10px;
   padding: 6px 12px;
   border: none;
-  background: #ffd6d6;
-  border-radius: 6px;
+  background: #fffaf5;
+  border-radius: 4px;
   cursor: pointer;
-  color: #ff6b6b;
-  font-weight: 600;
 }
 
 .tabs button.active {
-  background: #ff6b6b;
+  background: #e08c4e;
   color: white;
 }
 
@@ -154,21 +153,21 @@ form button:hover {
 }
 
 .message {
-  background: #fff0f0;
-  border-left: 6px solid #ff9f43; /* 未読オレンジ */
+  background: #fffaf5;
+  border: 1px solid #e2c6b2;
+  border-left: 6px solid #9ac3d8;
   padding: 10px;
   margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .message.read {
-  border-left-color: #1dd1a1; /* 既読グリーン */
-  background: #f0fff4;
+  border-left-color: #c3b991;
+  background: #fffaf5;
 }
 
 .message .from {
   font-size: 18px;
-  color: #ee5253; /* 赤茶系 */
+  color: #db4b0e;
 }
 
 .message .title {
@@ -180,10 +179,10 @@ form button:hover {
    カレンダー
 ======================= */
 :root {
-  --bg: #fef6f6;
-  --card: #fff0f0;
-  --accent: #ff6b6b;
-  --muted: #ff9f43;
+  --bg: #fdf6f0;
+  --card: #fffaf5;
+  --accent: #e08c4e;
+  --muted: #a78c7b;
 }
 
 .calendar-app {
@@ -192,7 +191,7 @@ form button:hover {
   padding: 18px;
   background: var(--card);
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(255, 107, 107, 0.2);
+  box-shadow: 0 6px 18px rgba(20,20,30,0.06);
 }
 
 .calendar-header {
@@ -204,21 +203,17 @@ form button:hover {
 
 .calendar-header button {
   background: none;
-  border: 1px solid #ffb3b3;
+  border: 1px solid #e2c6b2;
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
-  color: #ff6b6b;
-}
-
-.calendar-header button:hover {
-  background-color: #ffe3e3;
+  color: var(--muted);
 }
 
 .month-year {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ff3b3b;
+  color: #5a4634;
 }
 
 .calendar-controls {
@@ -232,10 +227,9 @@ form button:hover {
 .calendar-controls select {
   padding: 6px 8px;
   border-radius: 8px;
-  border: 1px solid #ffb3b3;
+  border: 1px solid #e2c6b2;
   background: white;
-  color: #ff6b6b;
-  cursor: pointer;
+  color: #5a4634;
 }
 
 .calendar {
@@ -247,18 +241,20 @@ form button:hover {
   text-align: center;
   padding: 8px 6px;
   font-weight: 600;
-  color: #ff6b6b;
-  border-bottom: 2px solid #ff9f43;
+  color: var(--muted);
+  border-bottom: 1px solid #e2c6b2;
 }
 
 .calendar tbody td {
-  width: 14.28%;
   height: 84px;
   vertical-align: top;
-  padding: 4px;
-  border: 1px solid #ffe3e3;
-  background: #fff5f5;
-  cursor: default;
+  padding: 6px;
+  border-right: 1px solid #f3f6fa;
+  border-bottom: 1px solid #f3f6fa;
+}
+
+.calendar tbody tr td:last-child {
+  border-right: 0;
 }
 
 .cell {
@@ -273,17 +269,15 @@ form button:hover {
   border-radius: 6px;
   width: 28px;
   text-align: center;
-  background: #ffe3e3;
-  color: #ff3b3b;
 }
 
 .date-number.today {
-  background: #ff6b6b;
+  background: var(--accent);
   color: white;
 }
 
 .date-number.inactive {
-  color: #ffc1c1;
+  color: #bfc7d8;
   font-weight: 500;
   background: transparent;
 }
@@ -293,60 +287,40 @@ form button:hover {
   flex: 1;
 }
 
-.day-content .event {
-  background: #ff6b6b;
-  color: white;
-  font-size: 13px;
-  padding: 2px 6px;
-  border-radius: 6px;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .calendar tbody td:hover {
-  background: #ffe3e3;
+  background: #fbfdff;
 }
 
 .legend {
   margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.95rem;
   display: flex;
   gap: 12px;
-  font-size: 0.95rem;
 }
 
 .legend-item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .today-dot::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #ff6b6b;
+  content:"";
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background: var(--accent);
 }
 
 .inactive::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  background: #ffe3e3;
-}
-
-.event-dot-legend::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 6px;
-  background: #ff6b6b;
+  content:"";
+  display:inline-block;
+  width:10px;
+  height:10px;
+  border-radius:2px;
+  background:#d6dbe6;
 }
 
 /* =======================
@@ -356,47 +330,53 @@ form button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff0f0;
+  background: #eef4fa;
   height: 100vh;
+  margin: 0;
 }
 
 .login-container {
-  background: #ffe3e3;
+  background: var(--card);
   padding: 40px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(255,107,107,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   width: 300px;
   text-align: center;
 }
 
 .login-container h2 {
   margin-bottom: 20px;
-  color: #ff6b6b;
+  color: #5a4634;
 }
 
 .login-container input {
   width: 100%;
   padding: 10px;
   margin-bottom: 12px;
-  border: 1px solid #ffb3b3;
+  border: 1px solid #e2c6b2;
   border-radius: 6px;
+  font-size: 16px;
 }
 
 .login-container button {
   width: 100%;
   padding: 10px;
-  background-color: #ff6b6b;
+  background-color: #e08c4e;
   color: white;
+  border: none;
   border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .login-container button:hover {
-  background-color: #ff3b3b;
+  background-color: #c76f2f;
 }
 
 .error-message {
-  color: #ee5253;
+  color: #c53030;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 /* =======================
@@ -406,21 +386,50 @@ form button:hover {
   position: fixed;
   right: 25px;
   bottom: 25px;
-  background-color: #ff6b6b;
+  /* 落ち着いた赤色 */
+  background-color: #e53e3e;
   color: #fff;
+  border: none;
   border-radius: 30px;
   padding: 8px 16px;
-  cursor: pointer;
   font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: 0.3s;
+  z-index: 1100;
 }
 .logout-btn:hover {
-  background-color: #ff3b3b;
+  background-color: #c53030;
   transform: translateY(-1px);
 }
 
 /* =======================
+   レスポンシブ対応
+======================= */
+@media (max-width: 600px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    box-shadow: none;
+  }
+
+  .main {
+    margin-left: 0;
+  }
+
+  .calendar tbody td {
+    height: 68px;
+    padding: 4px;
+  }
+
+  .month-year {
+    font-size: 1rem;
+  }
+}
+/* =======================
    スプラッシュ画面
+   落ち着いた色とアニメーションの抑制
 ======================= */
 #splash {
   position: fixed;
@@ -430,7 +439,7 @@ form button:hover {
   height: 100%;
   z-index: 9999;
   /* 落ち着いたダークブルー/ネイビーに変更 */
-  background-color: #ff6b6b;
+  background-color: #ffe682;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -470,29 +479,4 @@ form button:hover {
   font-size: 120px;
   color: #fff;
   animation: splash-entrance 2s ease-out;
-}
-
-/* =======================
-   レスポンシブ
-======================= */
-@media (max-width: 600px) {
-  .sidebar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 15px;
-  }
-  nav {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .main {
-    margin-top: 140px;
-  }
-  .calendar tbody td {
-    height: 68px;
-    padding: 4px;
-  }
-  .month-year {
-    font-size: 1rem;
-  }
 }

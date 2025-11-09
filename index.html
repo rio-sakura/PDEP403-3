@@ -119,7 +119,7 @@
     // 🎨 テーマ切替
     function changeTheme(theme) {
       const link = document.getElementById("themeStylesheet");
-      link.href = `style-${theme}.css`;
+      link.href = `style/style-${theme}.css`;
       localStorage.setItem("theme", theme);
     }
 
@@ -127,7 +127,7 @@
     window.addEventListener("DOMContentLoaded", async () => {
       // 前回のテーマ復元
       const savedTheme = localStorage.getItem("theme") || "light";
-      document.getElementById("themeStylesheet").href = `style-${savedTheme}.css`;
+      document.getElementById("themeStylesheet").href = `style/style-${savedTheme}.css`;
 
       // ログイン状態確認
       try {

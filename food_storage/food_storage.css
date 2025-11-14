@@ -1,142 +1,180 @@
-    /* -----------------------------
-    基本レイアウト
-    ----------------------------- */
-    body {
-    font-family: "Noto Sans JP", sans-serif;
-    background: #fafafa;
+    :root {
+    --bg: #f7f9fc;
+    --card: #ffffff;
+    --accent: #2b7cff;
+    --muted: #6b7280;
+    --border: #e5eaf3;
+    --radius: 12px;
+    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP",
+        system-ui, -apple-system, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* リセットと基本設定 */
+    * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    color: #333;
     }
 
+    html, body {
+    height: 100%;
+    background: var(--bg);
+    color: #0f172a;
+    }
+
+    /* ヘッダー */
     .site-header {
-    background: #4caf50;
-    color: #fff;
     text-align: center;
-    padding: 1rem 0;
-    font-size: 1.2rem;
+    padding: 32px 16px 10px;
+    background: linear-gradient(180deg, #fff, #f1f5ff);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .site-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    }
+    .lead {
+    color: var(--muted);
+    margin-top: 6px;
+    font-size: 0.95rem;
     }
 
+    /* メインコンテナ */
     .container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 1rem;
+    max-width: 980px;
+    margin: 28px auto;
+    padding: 16px;
     }
 
-    /* -----------------------------
-    スライダー全体
-    ----------------------------- */
-    .slider {
-    position: relative;
-    overflow: hidden;
-    }
-
-    .cards {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 150%;
-
-    }
-
+    /* カード */
     .card {
-    min-width: 200%;
-    box-sizing: border-box;
-    background: #fff;
-    margin: 0 0.5rem;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    border: 1px solid var(--border);
     }
 
-    .card h2 {
-    font-size: 1.6rem;
-    margin-bottom: 0.5rem;
-    color: #2e7d32;
+    /* 食材リスト全体 */
+    .foods-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 4px;
     }
 
-    .card .storage {
-    font-weight: bold;
-    margin-bottom: 0.3rem;
-    }
-
-    .card .period {
-    margin-bottom: 0.8rem;
-    color: #555;
-    }
-
-    .card ol {
-    padding-left: 1.2rem;
-    line-height: 1.6;
-    }
-
-    /* -----------------------------
-    保存場所のラベル
-    ----------------------------- */
-    .label {
-    padding: 0.2em 0.6em;
-    border-radius: 6px;
-    color: #fff;
-    font-size: 0.9rem;
-    }
-
-    .label.fridge {
-    background: #42a5f5;
-    }
-
-    .label.freezer {
-    background: #7e57c2;
-    }
-
-    .label.room {
-    background: #ffb300;
-    }
-
-    /* -----------------------------
-    スライドナビゲーション
-    ----------------------------- */
-    .slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(76,175,80,0.8);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem 0.8rem;
-    z-index: 10;
-    transition: background-color 0.3s;
-    }
-
-    .slider-btn:hover {
-    background: rgba(56,142,60,0.9);
-    }
-
-    .slider-btn.prev {
-    left: 10px;
-    }
-
-    .slider-btn.next {
-    right: 10px;
-    }
-
-    /* -----------------------------
-    保存のポイント
-    ----------------------------- */
-    .tips {
-    margin-top: 2rem;
-    background: #e8f5e9;
-    padding: 1rem;
+    /* 各食材カード */
+    .food {
+    padding: 16px;
     border-radius: 10px;
+    border: 1px solid #e3ebff;
+    background: linear-gradient(180deg, #fff, #f9fbff);
+    transition: all 0.2s ease-in-out;
+    }
+    .food:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(43, 124, 255, 0.15);
     }
 
-    .tips h3 {
-    margin-top: 0;
-    color: #388e3c;
+    .food h3 {
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+    color: #0f172a;
+    font-weight: 600;
     }
 
-    .tips li {
-    line-height: 1.6;
+    /* メタ情報 */
+    .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 6px;
+    }
+    .meta-item {
+    font-size: 0.9rem;
+    color: var(--muted);
     }
 
+    /* ラベル（chip） */
+    .chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(43, 124, 255, 0.1);
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.82rem;
+    }
+
+    /* 保存手順 */
+    .steps-list {
+    margin-left: 18px;
+    color: #0f172a;
+    font-size: 0.95rem;
+    }
+    .muted {
+    color: var(--muted);
+    }
+
+    /* 更新ボタン */
+    .list-actions {
+    margin-top: 16px;
+    text-align: center;
+    }
+    .btn {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #d6e0ff;
+    background: linear-gradient(180deg, #ffffff, #f2f7ff);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    }
+    .btn:hover {
+    background: #e8f0ff;
+    border-color: #b4ceff;
+    }
+    .btn:active {
+    transform: scale(0.98);
+    }
+
+    /* フッター */
+    .site-footer {
+    text-align: center;
+    padding: 14px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    }
+
+    /* スクロールバー */
+    .foods-list::-webkit-scrollbar {
+    width: 6px;
+    }
+    .foods-list::-webkit-scrollbar-thumb {
+    background: rgba(43, 124, 255, 0.3);
+    border-radius: 999px;
+    }
+    .foods-list::-webkit-scrollbar-track {
+    background: transparent;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 720px) {
+    .container {
+        padding: 12px;
+    }
+    .food h3 {
+        font-size: 1rem;
+    }
+    .meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+    }

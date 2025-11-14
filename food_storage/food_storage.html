@@ -3,148 +3,29 @@
     <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>食材の保管ガイド（スライド式）</title>
-    <link rel="stylesheet" href="food_storage.css" />
-    <style>
-        /* --- スライド用スタイル追加 --- */
-        .slider-container {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        max-width: 600px;
-        margin: 2rem auto;
-        }
-        .slide-wrapper {
-        display: flex;
-        transition: transform 0.5s ease;
-        }
-        .card {
-        min-width: 100%;
-        box-sizing: border-box;
-        }
-        .slide-controls {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 1rem;
-        }
-        .slide-btn {
-        background-color: #4c8bf5;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        }
-        .slide-btn:hover {
-        background-color: #2a6ae8;
-        }
-    </style>
+    <title>食材一覧（管理システム）</title>
+    <link rel="stylesheet" href="/food_storage/food_storage.css" />
     </head>
     <body>
     <header class="site-header">
-        <h1>食材の保管ガイド</h1>
+        <h1>食材管理システム（閲覧専用）</h1>
+        <p class="lead">登録済みの食材情報を一覧表示します。</p>
     </header>
 
     <main class="container">
-        <div class="slider-container">
-        <div class="slide-wrapper" id="slideWrapper">
-            <!-- 各カードがスライド単位 -->
-            <article class="card fridge">
-            <h2>レタス</h2>
-            <p class="storage">保存場所：<span class="label fridge">冷蔵</span></p>
-            <p class="period">保存目安：3〜4日</p>
-            <ol class="steps">
-                <li>芯をくり抜き、濡らしたキッチンペーパーを詰める。</li>
-                <li>ポリ袋に入れて軽く口を閉じて野菜室へ。</li>
-                <li>乾燥を防ぐのがポイント。</li>
-            </ol>
-            </article>
-
-            <article class="card room">
-            <h2>じゃがいも</h2>
-            <p class="storage">保存場所：<span class="label room">常温（冷暗所）</span></p>
-            <p class="period">保存目安：2〜3週間</p>
-            <ol class="steps">
-                <li>新聞紙に包んで冷暗所で保存。</li>
-                <li>光を避けて芽の発生を防ぐ。</li>
-                <li>玉ねぎとは別々に保管。</li>
-            </ol>
-            </article>
-
-            <article class="card fridge">
-            <h2>ブロッコリー</h2>
-            <p class="storage">保存場所：<span class="label fridge">冷蔵</span></p>
-            <p class="period">保存目安：3〜4日（ゆでて冷凍なら約1か月）</p>
-            <ol class="steps">
-                <li>茎を少し切り落とし、水を吸わせてポリ袋へ。</li>
-                <li>立てて保存すると鮮度長持ち。</li>
-                <li>固めにゆでて冷凍保存も可能。</li>
-            </ol>
-            </article>
-
-            <article class="card room">
-            <h2>トマト</h2>
-            <p class="storage">保存場所：<span class="label room">常温（追熟）→冷蔵</span></p>
-            <p class="period">保存目安：常温2〜3日、冷蔵で5日ほど</p>
-            <ol class="steps">
-                <li>未熟なものは常温で追熟。</li>
-                <li>赤くなったらヘタを下にしてポリ袋へ。</li>
-                <li>冷蔵庫の野菜室で保存。</li>
-            </ol>
-            </article>
-
-            <article class="card freezer">
-            <h2>きのこ類</h2>
-            <p class="storage">保存場所：<span class="label freezer">冷凍</span></p>
-            <p class="period">保存目安：2〜3週間</p>
-            <ol class="steps">
-                <li>石づきを取り、小房に分ける。</li>
-                <li>冷凍用袋に入れ、空気を抜いて密閉。</li>
-                <li>凍ったまま調理可能。</li>
-            </ol>
-            </article>
+        <section class="card list-card" aria-labelledby="list-title">
+        <h2 id="list-title">登録済みの食材一覧</h2>
+        <div id="foods-list" class="foods-list"></div>
+        <div class="list-actions">
+            <button id="refresh-btn" class="btn">更新</button>
         </div>
-
-        <!-- スライド操作ボタン -->
-        <div class="slide-controls">
-            <button class="slide-btn" id="prevBtn">◀ 前へ</button>
-            <button class="slide-btn" id="nextBtn">次へ ▶</button>
-        </div>
-        </div>
+        </section>
     </main>
 
-    <script>
-        const wrapper = document.getElementById('slideWrapper');
-        const slides = document.querySelectorAll('.card');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
+    <footer class="site-footer">
+        <small>※ 管理者が登録したデータベースから取得しています。</small>
+    </footer>
 
-        let currentIndex = 0;
-
-        function updateSlide() {
-        const offset = -currentIndex * 100;
-        wrapper.style.transform = `translateX(${offset}%)`;
-        }
-
-        nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        updateSlide();
-        });
-
-        prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        updateSlide();
-        });
-
-        // スワイプ操作にも対応（スマホ向け）
-        let startX = 0;
-        wrapper.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-        wrapper.addEventListener('touchend', e => {
-        const diff = e.changedTouches[0].clientX - startX;
-        if (diff > 50) prevBtn.click();
-        if (diff < -50) nextBtn.click();
-        });
-    </script>
+    <script src="/food_storage/food_storage.js"></script>
     </body>
     </html>

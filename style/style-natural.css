@@ -521,3 +521,36 @@ form button:hover {
   background-color: #f9f9f9;
   text-align: center;
 }
+.menu-box {
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  animation: fade-in 0.25s ease;
+}
+
+.close-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.menu-item {
+  background: #f4f4f4;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+}

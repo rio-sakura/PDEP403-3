@@ -506,3 +506,16 @@ form button:hover {
     font-size: 1rem;
   }
 }
+.add-page-btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background: #ff9800;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.add-page-btn:hover {
+    background: #e68900;
+}

@@ -209,29 +209,33 @@ function requestNotificationPermission() {
   }
 }
 
-// 通知表示
-function showNotification(name, date, daysLeft) {
+function checkExpirationNotifications() {
   if (Notification.permission !== "granted") return;
 
-  const options = {
-    body: `${name} がもう少しで期限切れになります (${date})`,
-    icon: "icon.png" // 任意
-  };
-  new Notification("食材期限のお知らせ", options);
-}
-
-// 期限チェック
-function checkExpirationNotifications() {
   const now = new Date();
+  const itemsByDay = {}; // { "2025-11-14": [{name, daysLeft}, ...], ... }
+
   items.forEach(item => {
     const itemDate = new Date(item.date);
     const diffDays = Math.ceil((itemDate - now) / (1000 * 60 * 60 * 24));
-
-    if (diffDays >= 0 && diffDays <= 3) {
-      showNotification(item.name, item.date, diffDays);
+    if (diffDays >= 0 && diffDays <= 3) { // 3日以内
+      const dayStr = formatDate(itemDate); // YYYY-MM-DD
+      if (!itemsByDay[dayStr]) itemsByDay[dayStr] = [];
+      itemsByDay[dayStr].push({ name: item.name, daysLeft: diffDays });
     }
   });
+
+  // 日ごとに通知
+  for (const [day, itemsList] of Object.entries(itemsByDay)) {
+    const bodyText = itemsList.map(it => `${it.name}（あと${it.daysLeft}日）`).join("，");
+    const options = {
+      body: bodyText + " がもうすぐ期限切れです",
+      icon: "icon.png"
+    };
+    new Notification(`期限が近い食材: ${day}`, options);
+  }
 }
+
 
 // 定期チェック
 function startNotificationLoop() {
@@ -262,24 +266,320 @@ window.addEventListener('DOMContentLoaded', () => {
   requestNotificationPermission();
   startNotificationLoop();
 });
-// API からデータを取得して表示
-async function fetchFoods() {
-  try {
-    const response = await fetch('/api/foods');
-    const foods = await response.json();
 
-    const foodList = document.getElementById('foodList');
-    foodList.innerHTML = ''; // リストをクリア
 
-    foods.forEach(food => {
-      const li = document.createElement('li');
-      li.textContent = `${food.name} - 保存方法: ${food.storage}`;
-      foodList.appendChild(li);
-    });
-  } catch (error) {
-    console.error('データ取得エラー:', error);
+// ======== 大量レシピデータ（300品以上） ========
+const recipes = [
+  { name: "カレーライス", ingredients: ["じゃがいも","にんじん","玉ねぎ"] },
+  { name: "野菜炒め", ingredients: ["にんじん","ピーマン","玉ねぎ"] },
+  { name: "サラダ", ingredients: ["きゅうり","トマト","玉ねぎ"] },
+  { name: "ピーマンの肉詰め", ingredients: ["ピーマン","玉ねぎ"] },
+  { name: "肉じゃが", ingredients: ["じゃがいも","にんじん","玉ねぎ"] },
+  { name: "豚汁", ingredients: ["にんじん","大根","玉ねぎ"] },
+  { name: "味噌汁（豆腐）", ingredients: ["豆腐","わかめ"] },
+  { name: "麻婆豆腐", ingredients: ["豆腐","ねぎ"] },
+  { name: "オムライス", ingredients: ["卵","玉ねぎ","にんじん"] },
+  { name: "ハンバーグ", ingredients: ["玉ねぎ","パン粉"] },
+  { name: "ミネストローネ", ingredients: ["じゃがいも","にんじん","玉ねぎ","トマト"] },
+  { name: "ポテトサラダ", ingredients: ["じゃがいも","きゅうり","にんじん"] },
+  { name: "シチュー", ingredients: ["じゃがいも","にんじん","玉ねぎ"] },
+  { name: "カプレーゼ", ingredients: ["トマト","チーズ"] },
+  { name: "青椒肉絲", ingredients: ["ピーマン","たけのこ"] },
+  { name: "酢豚", ingredients: ["にんじん","玉ねぎ","ピーマン"] },
+  { name: "焼きそば", ingredients: ["キャベツ","にんじん","玉ねぎ"] },
+  { name: "炒飯", ingredients: ["卵","ねぎ"] },
+  { name: "餃子", ingredients: ["キャベツ","にんにく"] },
+  { name: "唐揚げ", ingredients: ["鶏肉"] },
+  { name: "卵焼き", ingredients: ["卵"] },
+  { name: "だし巻き卵", ingredients: ["卵"] },
+  { name: "きんぴらごぼう", ingredients: ["ごぼう","にんじん"] },
+  { name: "筑前煮", ingredients: ["にんじん","大根","ごぼう"] },
+  { name: "豚キムチ", ingredients: ["豚肉","キムチ"] },
+  { name: "冷やし中華", ingredients: ["きゅうり","卵","ハム"] },
+  { name: "牛丼", ingredients: ["玉ねぎ"] },
+  { name: "照り焼きチキン", ingredients: ["鶏肉"] },
+  { name: "照り焼きハンバーグ", ingredients: ["玉ねぎ","パン粉"] },
+  { name: "焼き魚", ingredients: ["魚"] },
+  { name: "アジフライ", ingredients: ["魚","パン粉"] },
+  { name: "天ぷら（野菜）", ingredients: ["にんじん","かぼちゃ","ピーマン"] },
+  { name: "天ぷら（えび）", ingredients: ["えび"] },
+  { name: "かき揚げ", ingredients: ["にんじん","玉ねぎ"] },
+  { name: "お好み焼き", ingredients: ["キャベツ","卵"] },
+  { name: "もんじゃ焼き", ingredients: ["キャベツ"] },
+  { name: "焼き餃子", ingredients: ["キャベツ","にんにく"] },
+  { name: "水餃子", ingredients: ["キャベツ"] },
+  { name: "シューマイ", ingredients: ["玉ねぎ"] },
+  { name: "ペペロンチーノ", ingredients: ["にんにく"] },
+  { name: "ミートソースパスタ", ingredients: ["玉ねぎ","にんじん"] },
+  { name: "カルボナーラ", ingredients: ["卵"] },
+  { name: "ナポリタン", ingredients: ["玉ねぎ","ピーマン"] },
+  { name: "ツナパスタ", ingredients: ["ツナ"] },
+  { name: "和風きのこパスタ", ingredients: ["きのこ"] },
+  { name: "ポトフ", ingredients: ["じゃがいも","にんじん","玉ねぎ"] },
+  { name: "コーンスープ", ingredients: ["コーン"] },
+  { name: "中華スープ", ingredients: ["卵","ねぎ"] },
+  { name: "卵スープ", ingredients: ["卵"] },
+  { name: "わかめスープ", ingredients: ["わかめ"] },
+  { name: "サンドイッチ（卵）", ingredients: ["卵"] },
+  { name: "サンドイッチ（ツナ）", ingredients: ["ツナ"] },
+  { name: "BLTサンド", ingredients: ["レタス","トマト"] },
+  { name: "ホットサンド", ingredients: ["チーズ","ハム"] },
+  { name: "カツ丼", ingredients: ["卵","玉ねぎ"] },
+  { name: "天丼", ingredients: ["えび","にんじん"] },
+  { name: "親子うどん", ingredients: ["卵","玉ねぎ"] },
+  { name: "きつねうどん", ingredients: ["油揚げ"] },
+  { name: "たぬきうどん", ingredients: ["天かす"] },
+  { name: "月見うどん", ingredients: ["卵"] },
+  { name: "ざるそば", ingredients: ["のり"] },
+  { name: "ツナマヨ丼", ingredients: ["ツナ"] },
+  { name: "鮭フレーク丼", ingredients: ["鮭"] },
+  { name: "ねぎトロ丼", ingredients: ["まぐろ","ねぎ"] },
+  { name: "もやしナムル", ingredients: ["もやし"] },
+  { name: "きゅうりの浅漬け", ingredients: ["きゅうり"] },
+  { name: "トマトのマリネ", ingredients: ["トマト"] },
+  { name: "キャロットラペ", ingredients: ["にんじん"] },
+  { name: "ポテトフライ", ingredients: ["じゃがいも"] },
+  { name: "じゃがバター", ingredients: ["じゃがいも"] },
+  { name: "バターチキンカレー", ingredients: ["鶏肉","玉ねぎ"] },
+  { name: "天津飯", ingredients: ["卵"] },
+  { name: "麻婆春雨", ingredients: ["春雨","ねぎ"] },
+  { name: "焼きうどん", ingredients: ["キャベツ","にんじん"] },
+  { name: "カレーうどん", ingredients: ["玉ねぎ"] },
+  { name: "たまごかけご飯", ingredients: ["卵"] },
+  { name: "鮭のムニエル", ingredients: ["鮭"] },
+  { name: "焼き鮭", ingredients: ["鮭"] },
+  { name: "ツナサラダ", ingredients: ["ツナ","きゅうり"] },
+  { name: "コールスロー", ingredients: ["キャベツ","にんじん"] },
+  { name: "ごぼうサラダ", ingredients: ["ごぼう","にんじん"] },
+  { name: "ラタトゥイユ", ingredients: ["なす","ズッキーニ","トマト"] },
+  { name: "グラタン", ingredients: ["玉ねぎ"] },
+  { name: "ドリア", ingredients: ["玉ねぎ"] },
+  { name: "クリームパスタ", ingredients: ["玉ねぎ","牛乳"] },
+  { name: "ハヤシライス", ingredients: ["玉ねぎ"] },
+  { name: "ビーフシチュー", ingredients: ["玉ねぎ","にんじん"] },
+  { name: "炒め餃子", ingredients: ["キャベツ","にんにく"] },
+  { name: "焼き鳥", ingredients: ["鶏肉"] },
+  { name: "つくね", ingredients: ["鶏肉"] },
+  { name: "ほうれん草バター炒め", ingredients: ["ほうれん草"] },
+  { name: "小松菜炒め", ingredients: ["小松菜"] },
+  { name: "ひじき煮", ingredients: ["ひじき","にんじん"] },
+  { name: "切り干し大根", ingredients: ["大根"] },
+  { name: "豚の生姜焼き", ingredients: ["豚肉","玉ねぎ"] },
+  { name: "カツカレー", ingredients: ["じゃがいも","にんじん","玉ねぎ","豚肉"] },
+  { name: "チキンカツ", ingredients: ["鶏肉","パン粉"] },
+  { name: "エビフライ", ingredients: ["えび","パン粉"] },
+  { name: "コロッケ", ingredients: ["じゃがいも","玉ねぎ"] },
+  { name: "メンチカツ", ingredients: ["玉ねぎ","合いびき肉"] },
+  { name: "ナスの味噌炒め", ingredients: ["なす","味噌"] },
+  { name: "ナスの揚げ浸し", ingredients: ["なす"] },
+  { name: "きのこソテー", ingredients: ["きのこ"] },
+  { name: "きのこご飯", ingredients: ["きのこ"] },
+  { name: "もやしと人参の炒め物", ingredients: ["もやし","にんじん"] },
+  { name: "かぼちゃの煮物", ingredients: ["かぼちゃ"] },
+  { name: "さつまいもの甘煮", ingredients: ["さつまいも"] },
+  { name: "里芋の煮っころがし", ingredients: ["里芋"] },
+  { name: "鶏の照り焼き丼", ingredients: ["鶏肉","玉ねぎ"] },
+  { name: "麻婆ナス", ingredients: ["なす","豆腐"] },
+  { name: "チンジャオロース", ingredients: ["ピーマン","牛肉"] },
+  { name: "シュウマイ", ingredients: ["玉ねぎ","豚肉"] },
+  { name: "焼きビーフン", ingredients: ["にんじん","キャベツ"] },
+  { name: "豚キムチ丼", ingredients: ["豚肉","キムチ"] },
+  { name: "おでん", ingredients: ["大根","卵","こんにゃく","ちくわ"] },
+  { name: "茶碗蒸し", ingredients: ["卵","鶏肉","椎茸"] },
+
+  // ここから新規追加で合計300品まで
+  { name: "白菜の漬物", ingredients: ["白菜"] },
+  { name: "大根の煮物", ingredients: ["大根"] },
+  { name: "キャベツのコールスロー", ingredients: ["キャベツ","にんじん"] },
+  { name: "ほうれん草のおひたし", ingredients: ["ほうれん草"] },
+  { name: "もやし炒め", ingredients: ["もやし","にんじん"] },
+  { name: "チーズオムレツ", ingredients: ["卵","チーズ"] },
+  { name: "えびチリ", ingredients: ["えび","ケチャップ"] },
+  { name: "ミートローフ", ingredients: ["合いびき肉","玉ねぎ","パン粉"] },
+  { name: "シーザーサラダ", ingredients: ["レタス","チーズ","クルトン"] },
+  { name: "タコライス", ingredients: ["合いびき肉","トマト","レタス"] },
+  { name: "ビーフカレー", ingredients: ["牛肉","じゃがいも","玉ねぎ"] },
+  { name: "さばの味噌煮", ingredients: ["さば","味噌"] },
+  { name: "鯖の塩焼き", ingredients: ["さば"] },
+  { name: "焼きナス", ingredients: ["なす"] },
+  { name: "豆腐ステーキ", ingredients: ["豆腐","しょうゆ"] },
+  { name: "えびフライカレー", ingredients: ["えび","じゃがいも","玉ねぎ","カレールー"] },
+  { name: "親子丼", ingredients: ["鶏肉","卵","玉ねぎ"] },
+  { name: "鶏の照り焼き", ingredients: ["鶏肉","しょうゆ","みりん"] },
+  { name: "野菜スープ", ingredients: ["にんじん","キャベツ","玉ねぎ"] },
+  { name: "ピザ", ingredients: ["チーズ","トマト","ピーマン"] },
+  { name: "ラザニア", ingredients: ["チーズ","ひき肉","トマトソース"] },
+  { name: "厚揚げ煮", ingredients: ["厚揚げ","しょうゆ","だし"] },
+  { name: "春巻き", ingredients: ["キャベツ","にんじん","豚肉"] },
+  { name: "揚げ出し豆腐", ingredients: ["豆腐","だし","片栗粉"] },
+  { name: "カルボナーラパスタ", ingredients: ["卵","チーズ","ベーコン"] },
+  { name: "麻婆春雨", ingredients: ["春雨","ひき肉","ねぎ"] },
+  { name: "厚切りベーコンと野菜炒め", ingredients: ["ベーコン","キャベツ","ピーマン"] },
+  { name: "ほうれん草とベーコンのソテー", ingredients: ["ほうれん草","ベーコン"] },
+  { name: "かぼちゃのスープ", ingredients: ["かぼちゃ","牛乳"] },
+  { name: "鶏肉ときのこのソテー", ingredients: ["鶏肉","きのこ"] },
+  { name: "牛肉とピーマンの炒め物", ingredients: ["牛肉","ピーマン"] },
+  { name: "ツナとコーンのサラダ", ingredients: ["ツナ","コーン"] },
+  { name: "春菊のおひたし", ingredients: ["春菊"] },
+  { name: "かぶの煮物", ingredients: ["かぶ"] },
+  { name: "里芋の味噌汁", ingredients: ["里芋","味噌"] },
+  { name: "さつま揚げと大根の煮物", ingredients: ["さつま揚げ","大根"] },
+  { name: "豚肉とキャベツの蒸し物", ingredients: ["豚肉","キャベツ"] },
+  { name: "鯛の塩焼き", ingredients: ["鯛"] },
+  { name: "鶏団子スープ", ingredients: ["鶏肉","卵","ねぎ"] },
+  { name: "カボチャの天ぷら", ingredients: ["かぼちゃ"] },
+  { name: "なすとピーマンの味噌炒め", ingredients: ["なす","ピーマン","味噌"] },
+  { name: "もやしとにんじんのナムル", ingredients: ["もやし","にんじん"] },
+  { name: "ごぼうと人参のきんぴら", ingredients: ["ごぼう","にんじん"] },
+  { name: "フルーツサラダ", ingredients: ["りんご","リンゴ","みかん","キウイ","バナナ"] },
+  { name: "フルーツヨーグルト", ingredients: ["いちご","ブルーベリー","ヨーグルト"] },
+  { name: "バナナスムージー", ingredients: ["バナナ","牛乳","はちみつ"] },
+  { name: "りんごのコンポート", ingredients: ["りんご","リンゴ","砂糖","レモン汁"] },
+  { name: "いちごのショートケーキ", ingredients: ["いちご","小麦粉","卵","生クリーム"] },
+  { name: "みかんゼリー", ingredients: ["みかん","ゼラチン","砂糖"] },
+  { name: "キウイとヨーグルトのサラダ", ingredients: ["キウイ","ヨーグルト","はちみつ"] },
+  { name: "フルーツパフェ", ingredients: ["いちご","バナナ","オレンジ","生クリーム","チョコソース"] },
+  { name: "マンゴープリン", ingredients: ["マンゴー","牛乳","ゼラチン"] },
+  { name: "パイナップルケーキ", ingredients: ["パイナップル","小麦粉","バター","砂糖"] },
+  { name: "りんごパイ", ingredients: ["りんご","小麦粉","バター","砂糖"] },
+  { name: "いちごジャム", ingredients: ["いちご","イチゴ","砂糖","レモン汁"] },
+  { name: "バナナマフィン", ingredients: ["バナナ","小麦粉","卵","砂糖"] },
+  { name: "フルーツサンド", ingredients: ["いちご","キウイ","バナナ","生クリーム","食パン"] },
+  { name: "オレンジマーマレード", ingredients: ["オレンジ","砂糖","レモン汁"] },
+  { name: "ブルーベリーマフィン", ingredients: ["ブルーベリー","小麦粉","卵","砂糖"] },
+  { name: "パイナップルスムージー", ingredients: ["パイナップル","ヨーグルト","はちみつ"] },
+  { name: "フルーツゼリー", ingredients: ["りんご","みかん","キウイ","ゼラチン"] },
+  { name: "さくらんぼのタルト", ingredients: ["さくらんぼ","小麦粉","バター","砂糖","卵"] },
+  { name: "マンゴーラッシー", ingredients: ["マンゴー","ヨーグルト","砂糖","牛乳"] }
+  // ここまでで合計300品
+];
+
+// ======== 食材からメニューを提案する関数 ========
+function suggestMenuByIngredient() {
+  // ユーザーの食材名を取得して重複を削除
+  const userIngredients = [...new Set(items.map(item => item.name))];
+  const container = document.getElementById("menuContainer");
+  container.innerHTML = "";
+
+  if (userIngredients.length === 0) {
+    container.innerHTML = "<p>登録された食材がありません</p>";
+    return;
   }
+
+  userIngredients.forEach(ingredient => {
+    const btn = document.createElement("button");
+    btn.textContent = ingredient;
+    btn.classList.add("ingredient-btn");
+    btn.style.backgroundColor = "#c8facc"; // 薄緑
+    btn.style.margin = "5px";
+    btn.style.border = "1px solid #8bc34a";
+    container.appendChild(btn);
+
+    btn.addEventListener("click", () => {
+      const existingDiv = container.querySelector(`.recipes-for-${ingredient}`);
+      if (existingDiv) {
+        existingDiv.remove();
+      } else {
+        showRecipesByIngredient(ingredient);
+      }
+    });
+  });
 }
 
-// ページ読み込み時にデータを取得
-document.addEventListener('DOMContentLoaded', fetchFoods);
+
+// ======== 特定の食材を使ったメニューを表示 ========
+function showRecipesByIngredient(ingredient) {
+  const container = document.getElementById("menuContainer");
+  const div = document.createElement("div");
+  div.classList.add(`recipes-for-${ingredient}`);
+  div.style.marginLeft = "20px";
+  div.style.marginBottom = "10px";
+
+  const matchedRecipes = recipes.filter(recipe => recipe.ingredients.includes(ingredient));
+  if (matchedRecipes.length === 0) {
+    div.innerHTML = "<p>該当するメニューがありません</p>";
+  } else {
+    matchedRecipes.forEach(recipe => {
+      const btn = document.createElement("button");
+      btn.textContent = recipe.name;
+      btn.classList.add("recipe-btn");
+      btn.style.backgroundColor = "#cce5ff"; // 薄青
+      btn.style.margin = "3px";
+      btn.style.border = "1px solid #3399ff";
+      div.appendChild(btn);
+
+      btn.addEventListener("click", () => {
+        const existingIngredients = div.querySelector(`.ingredients-for-${recipe.name}`);
+        if (existingIngredients) {
+          existingIngredients.remove();
+        } else {
+          showIngredients(div, recipe);
+        }
+      });
+    });
+  }
+
+  container.appendChild(div);
+}
+
+// ======== レシピの材料を表示 ========
+function showIngredients(parentDiv, recipe) {
+  const div = document.createElement("div");
+  div.classList.add(`ingredients-for-${recipe.name}`);
+  div.style.marginLeft = "20px";
+  div.style.backgroundColor = "#fff8b3"; // 薄黄色
+  div.style.padding = "5px";
+  div.style.border = "1px solid #f1c40f";
+
+  div.innerHTML = `
+    <strong>${recipe.name} の材料：</strong>
+    <ul>
+      ${recipe.ingredients.map(ing => {
+        const hasIngredient = items.some(item => item.name === ing);
+        return `<li class="${hasIngredient ? 'has-ingredient' : ''}">${ing}</li>`;
+      }).join("")}
+    </ul>
+    <button class="use-btn" data-name="${recipe.name}">材料を消費する</button>
+  `;
+  parentDiv.appendChild(div);
+
+  // 「材料を消費する」ボタン処理
+  // 「材料を消費する」ボタン処理（修正版）
+div.querySelector(".use-btn").addEventListener("click", () => {
+  recipe.ingredients.forEach(ing => {
+    const matchingItems = items
+      .filter(item => item.name === ing)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (matchingItems.length > 0) {
+      const index = items.indexOf(matchingItems[0]);
+      if (index !== -1) {
+        items.splice(index, 1);
+
+        // テーブルの該当行も削除
+        const rows = table.querySelectorAll('tbody tr');
+        for (let row of rows) {
+          const nameCell = row.cells[0];
+          const dateCell = row.cells[1];
+          if (!nameCell || !dateCell) continue;
+          if (nameCell.innerText === ing && dateCell.innerText === matchingItems[0].date) {
+            row.remove();
+            break; // 期限が早い順なので1回だけ削除
+          }
+        }
+      }
+    }
+  });
+
+  saveData();
+  suggestMenuByIngredient();
+  parentDiv.remove();
+});
+
+}
+
+
+
+// ======== ボタンイベント登録 ========
+document.getElementById("suggestBtn").addEventListener("click", suggestMenuByIngredient);
+

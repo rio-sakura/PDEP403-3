@@ -571,3 +571,9 @@ form button:hover {
   text-align: center;
   border-radius: 6px;
 }
+
+.has-ingredient {
+  background-color: #c8facc; /* 薄緑 */
+  padding: 2px 4px;
+  border-radius: 3px;
+}

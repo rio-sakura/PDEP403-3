@@ -262,3 +262,24 @@ window.addEventListener('DOMContentLoaded', () => {
   requestNotificationPermission();
   startNotificationLoop();
 });
+// API からデータを取得して表示
+async function fetchFoods() {
+  try {
+    const response = await fetch('/api/foods');
+    const foods = await response.json();
+
+    const foodList = document.getElementById('foodList');
+    foodList.innerHTML = ''; // リストをクリア
+
+    foods.forEach(food => {
+      const li = document.createElement('li');
+      li.textContent = `${food.name} - 保存方法: ${food.storage}`;
+      foodList.appendChild(li);
+    });
+  } catch (error) {
+    console.error('データ取得エラー:', error);
+  }
+}
+
+// ページ読み込み時にデータを取得
+document.addEventListener('DOMContentLoaded', fetchFoods);

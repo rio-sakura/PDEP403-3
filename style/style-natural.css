@@ -480,3 +480,82 @@ form button:hover {
   color: #fff;
   animation: splash-entrance 2s ease-out;
 }
+.menu-suggest {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+#suggestBtn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#suggestBtn:hover {
+  background-color: #45a049;
+}
+
+.menu-columns {
+  display: flex;
+  gap: 10px; /* 列の間隔 */
+}
+
+.column {
+  flex: 1; /* 3列で均等幅 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* アイテム間の間隔 */
+}
+
+.column div {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+.menu-box {
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  animation: fade-in 0.25s ease;
+}
+
+.close-menu {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.menu-item {
+  background: #f4f4f4;
+  padding: 8px;
+  text-align: center;
+  border-radius: 6px;
+}
+.has-ingredient {
+  background-color: #c8facc; /* 薄緑 */
+  padding: 2px 4px;
+  border-radius: 3px;
+}

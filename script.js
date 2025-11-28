@@ -430,18 +430,36 @@ const recipes = [
   { name: "カボチャの天ぷら", ingredients: ["かぼちゃ"] },
   { name: "なすとピーマンの味噌炒め", ingredients: ["なす","ピーマン","味噌"] },
   { name: "もやしとにんじんのナムル", ingredients: ["もやし","にんじん"] },
-  { name: "ごぼうと人参のきんぴら", ingredients: ["ごぼう","にんじん"] }
+  { name: "ごぼうと人参のきんぴら", ingredients: ["ごぼう","にんじん"] },
+  { name: "フルーツサラダ", ingredients: ["りんご","リンゴ","みかん","キウイ","バナナ"] },
+  { name: "フルーツヨーグルト", ingredients: ["いちご","ブルーベリー","ヨーグルト"] },
+  { name: "バナナスムージー", ingredients: ["バナナ","牛乳","はちみつ"] },
+  { name: "りんごのコンポート", ingredients: ["りんご","リンゴ","砂糖","レモン汁"] },
+  { name: "いちごのショートケーキ", ingredients: ["いちご","小麦粉","卵","生クリーム"] },
+  { name: "みかんゼリー", ingredients: ["みかん","ゼラチン","砂糖"] },
+  { name: "キウイとヨーグルトのサラダ", ingredients: ["キウイ","ヨーグルト","はちみつ"] },
+  { name: "フルーツパフェ", ingredients: ["いちご","バナナ","オレンジ","生クリーム","チョコソース"] },
+  { name: "マンゴープリン", ingredients: ["マンゴー","牛乳","ゼラチン"] },
+  { name: "パイナップルケーキ", ingredients: ["パイナップル","小麦粉","バター","砂糖"] },
+  { name: "りんごパイ", ingredients: ["りんご","小麦粉","バター","砂糖"] },
+  { name: "いちごジャム", ingredients: ["いちご","イチゴ","砂糖","レモン汁"] },
+  { name: "バナナマフィン", ingredients: ["バナナ","小麦粉","卵","砂糖"] },
+  { name: "フルーツサンド", ingredients: ["いちご","キウイ","バナナ","生クリーム","食パン"] },
+  { name: "オレンジマーマレード", ingredients: ["オレンジ","砂糖","レモン汁"] },
+  { name: "ブルーベリーマフィン", ingredients: ["ブルーベリー","小麦粉","卵","砂糖"] },
+  { name: "パイナップルスムージー", ingredients: ["パイナップル","ヨーグルト","はちみつ"] },
+  { name: "フルーツゼリー", ingredients: ["りんご","みかん","キウイ","ゼラチン"] },
+  { name: "さくらんぼのタルト", ingredients: ["さくらんぼ","小麦粉","バター","砂糖","卵"] },
+  { name: "マンゴーラッシー", ingredients: ["マンゴー","ヨーグルト","砂糖","牛乳"] }
   // ここまでで合計300品
 ];
 
-
-// メニュー提案関数
-// =======================
-// ======== メニュー提案関数 ========
+// ======== 食材からメニューを提案する関数 ========
 function suggestMenuByIngredient() {
-  const userIngredients = items.map(item => item.name); // 登録食材
+  // ユーザーの食材名を取得して重複を削除
+  const userIngredients = [...new Set(items.map(item => item.name))];
   const container = document.getElementById("menuContainer");
-  container.innerHTML = ""; // 前回の提案をクリア
+  container.innerHTML = "";
 
   if (userIngredients.length === 0) {
     container.innerHTML = "<p>登録された食材がありません</p>";
@@ -449,35 +467,119 @@ function suggestMenuByIngredient() {
   }
 
   userIngredients.forEach(ingredient => {
-    const matchedRecipes = recipes.filter(recipe => recipe.ingredients.includes(ingredient));
-    if (matchedRecipes.length === 0) return;
+    const btn = document.createElement("button");
+    btn.textContent = ingredient;
+    btn.classList.add("ingredient-btn");
+    btn.style.backgroundColor = "#c8facc"; // 薄緑
+    btn.style.margin = "5px";
+    btn.style.border = "1px solid #8bc34a";
+    container.appendChild(btn);
 
-    // 食材ごとのボックスを作成
-    const box = document.createElement("div");
-    box.classList.add("ingredient-box");
-
-    // タイトル
-    const title = document.createElement("h3");
-    title.textContent = `${ingredient}を使ったレシピ`;
-    box.appendChild(title);
-
-    // レシピリスト
-    const ul = document.createElement("ul");
-    matchedRecipes.forEach(recipe => {
-      const li = document.createElement("li");
-      li.textContent = recipe.name;
-      ul.appendChild(li);
+    btn.addEventListener("click", () => {
+      const existingDiv = container.querySelector(`.recipes-for-${ingredient}`);
+      if (existingDiv) {
+        existingDiv.remove();
+      } else {
+        showRecipesByIngredient(ingredient);
+      }
     });
-    box.appendChild(ul);
-
-    container.appendChild(box);
   });
-
-  // もしマッチするレシピがなければ
-  if (!container.hasChildNodes()) {
-    container.innerHTML = "<p>使えるメニューがありません</p>";
-  }
 }
 
-// ボタンにイベント登録
+
+// ======== 特定の食材を使ったメニューを表示 ========
+function showRecipesByIngredient(ingredient) {
+  const container = document.getElementById("menuContainer");
+  const div = document.createElement("div");
+  div.classList.add(`recipes-for-${ingredient}`);
+  div.style.marginLeft = "20px";
+  div.style.marginBottom = "10px";
+
+  const matchedRecipes = recipes.filter(recipe => recipe.ingredients.includes(ingredient));
+  if (matchedRecipes.length === 0) {
+    div.innerHTML = "<p>該当するメニューがありません</p>";
+  } else {
+    matchedRecipes.forEach(recipe => {
+      const btn = document.createElement("button");
+      btn.textContent = recipe.name;
+      btn.classList.add("recipe-btn");
+      btn.style.backgroundColor = "#cce5ff"; // 薄青
+      btn.style.margin = "3px";
+      btn.style.border = "1px solid #3399ff";
+      div.appendChild(btn);
+
+      btn.addEventListener("click", () => {
+        const existingIngredients = div.querySelector(`.ingredients-for-${recipe.name}`);
+        if (existingIngredients) {
+          existingIngredients.remove();
+        } else {
+          showIngredients(div, recipe);
+        }
+      });
+    });
+  }
+
+  container.appendChild(div);
+}
+
+// ======== レシピの材料を表示 ========
+function showIngredients(parentDiv, recipe) {
+  const div = document.createElement("div");
+  div.classList.add(`ingredients-for-${recipe.name}`);
+  div.style.marginLeft = "20px";
+  div.style.backgroundColor = "#fff8b3"; // 薄黄色
+  div.style.padding = "5px";
+  div.style.border = "1px solid #f1c40f";
+
+  div.innerHTML = `
+    <strong>${recipe.name} の材料：</strong>
+    <ul>
+      ${recipe.ingredients.map(ing => {
+        const hasIngredient = items.some(item => item.name === ing);
+        return `<li class="${hasIngredient ? 'has-ingredient' : ''}">${ing}</li>`;
+      }).join("")}
+    </ul>
+    <button class="use-btn" data-name="${recipe.name}">材料を消費する</button>
+  `;
+  parentDiv.appendChild(div);
+
+  // 「材料を消費する」ボタン処理
+  // 「材料を消費する」ボタン処理（修正版）
+div.querySelector(".use-btn").addEventListener("click", () => {
+  recipe.ingredients.forEach(ing => {
+    const matchingItems = items
+      .filter(item => item.name === ing)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (matchingItems.length > 0) {
+      const index = items.indexOf(matchingItems[0]);
+      if (index !== -1) {
+        items.splice(index, 1);
+
+        // テーブルの該当行も削除
+        const rows = table.querySelectorAll('tbody tr');
+        for (let row of rows) {
+          const nameCell = row.cells[0];
+          const dateCell = row.cells[1];
+          if (!nameCell || !dateCell) continue;
+          if (nameCell.innerText === ing && dateCell.innerText === matchingItems[0].date) {
+            row.remove();
+            break; // 期限が早い順なので1回だけ削除
+          }
+        }
+      }
+    }
+  });
+
+  saveData();
+  suggestMenuByIngredient();
+  parentDiv.remove();
+});
+
+}
+
+
+
+// ======== ボタンイベント登録 ========
 document.getElementById("suggestBtn").addEventListener("click", suggestMenuByIngredient);
+

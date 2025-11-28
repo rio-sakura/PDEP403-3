@@ -93,33 +93,6 @@
         ※反映されない場合はリロードしてください
       </main>
 
-      <!-- 消費期限リスト -->
-      <div class="messages">
-        <h2>食材の消費期限（目安）</h2>
-        <input type="text" id="searchBox" placeholder="名前で検索（例：きゅうり）">
-        <div class="tabs">
-          <button onclick="filterMessages('all')" id="tabAll">すべて</button>
-          <button onclick="filterMessages('unread')" id="tabUnread">冷蔵庫</button>
-          <button onclick="filterMessages('read')" id="tabRead">常温</button>
-        </div>
-
-        <div class="message-list" id="messageList">
-          <!-- 冷蔵向き -->
-          <div class="message unread"><div class="from">きゅうり</div><div class="title">10日</div></div>
-          <div class="message unread"><div class="from">じゃがいも</div><div class="title">NG</div></div>
-          <div class="message unread"><div class="from">玉ねぎ</div><div class="title">1〜2週間</div></div>
-          <div class="message unread"><div class="from">にんじん</div><div class="title">2〜3週間</div></div>
-          <div class="message unread"><div class="from">ピーマン</div><div class="title">1週間</div></div>
-
-          <!-- 常温向き -->
-          <div class="message read"><div class="from">じゃがいも</div><div class="title">2〜4週間</div></div>
-          <div class="message read"><div class="from">玉ねぎ</div><div class="title">1〜2か月</div></div>
-          <div class="message read"><div class="from">にんじん</div><div class="title">数日（夏場は不向き）</div></div>
-          <div class="message read"><div class="from">トマト</div><div class="title">完熟前なら3〜5日</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ================================
        ✅ スクリプト（すべて最後に集約）

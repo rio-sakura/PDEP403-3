@@ -1,55 +1,49 @@
-// 食材一覧を表示する関数
-function displayFoods() {
-    const foodList = document.getElementById("foodList");
-    foodList.innerHTML = "";
+// register.js (index.html専用)
 
-    const foods = JSON.parse(localStorage.getItem("foods") || "[]");
+document.addEventListener('DOMContentLoaded', () => {
+    // index.htmlの要素を取得
+    const form = document.getElementById('addItemForm');
+    const table = document.getElementById('scheduleTable');
 
-    foods.forEach((food, index) => {
-        const li = document.createElement("li");
+    // フォームが存在しない場合は処理を終了
+    if (!form || !table) {
+        return; 
+    }
 
-        // 食材情報
-        const text = document.createElement("span");
-        text.textContent =
-            `● ${food.name}（${food.category}） / 賞味期限：${food.limit}`;
+    // ======== 食材追加 (メインフォーム) 処理 ========
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        
+        const nameInput = document.getElementById("itemName");
+        const dateInput = document.getElementById("itemDate");
+        
+        const name = nameInput.value.trim();
+        const date = dateInput.value.trim();
 
-        // 削除ボタン
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "削除";
-        delBtn.classList.add("delete-btn");
+        if (!name || !date) {
+            alert("食材名と期限を両方入力してください。");
+            return;
+        }
 
-        // 削除処理
-        delBtn.addEventListener("click", () => {
-            foods.splice(index, 1); // 配列から削除
-            localStorage.setItem("foods", JSON.stringify(foods)); // 保存し直す
-            displayFoods(); // 最描画
-        });
+        // 1. テーブルに行を追加
+        const tbody = table.querySelector("tbody");
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+            <td>${name}</td>
+            <td>${date}</td>
+            <td><button class="delete-btn">削除</button></td>
+        `;
+        tbody.appendChild(newRow);
 
-        li.appendChild(text);
-        li.appendChild(delBtn);
-        foodList.appendChild(li);
+        // 2. saveData()を呼び出す
+        // これにより、データ保存とカレンダー更新（renderCalendar()）が実行される。
+        if (typeof saveData === 'function') {
+            saveData();
+        } else {
+            // エラー表示は script.js が読み込まれていない可能性を示唆
+            console.error("saveData関数が利用できません。index.htmlのスクリプト読み込み順を確認してください。");
+        }
+
+        form.reset(); // フォームをクリア
     });
-}
-
-// フォーム送信イベント
-document.getElementById("foodForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("foodName").value;
-    const limit = document.getElementById("foodLimit").value;
-    const category = document.getElementById("foodCategory").value;
-
-    const foods = JSON.parse(localStorage.getItem("foods") || "[]");
-    foods.push({ name, limit, category });
-    localStorage.setItem("foods", JSON.stringify(foods));
-
-    document.getElementById("message").textContent =
-        `「${name}」を登録しました！（カテゴリ：${category}）`;
-
-    this.reset();
-
-    displayFoods();
 });
-
-// ページ読み込み時に表示
-window.addEventListener("load", displayFoods);

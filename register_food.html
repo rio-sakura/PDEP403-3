@@ -1,38 +1,47 @@
 <!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8">
-    <title>食材登録ページ</title>
-    <link rel="stylesheet" href="register_food.css">
+    <meta charset="utf-8">
+    <title>食材登録ページ</title>
+    <link rel="stylesheet" href="register_food.css">
 </head>
 <body>
-     <a href="index.html" class="back-btn">← 一覧ページに戻る</a>
-    <h1>食材を登録する</h1>
+    <a href="index.html" class="back-btn">← 一覧ページに戻る</a>
+    <h1>食材を登録する</h1>
 
-    <form id="foodForm">
-        <label>食材名：</label>
-        <input type="text" id="foodName" required>
+    <form id="foodForm">
+        <label>食材名：</label>
+        <input type="text" id="foodName" required>
 
-        <label>賞味期限：</label>
-        <input type="date" id="foodLimit" required>
+        <label>賞味期限：</label>
+        <input type="date" id="foodLimit" required>
 
-        <label>カテゴリー：</label>
-        <select id="foodCategory">
-            <option value="野菜">野菜</option>
-            <option value="肉">肉</option>
-            <option value="魚">魚</option>
-            <option value="飲料">飲料</option>
-            <option value="その他">その他</option>
-        </select>
+        <label>値段（円）：</label>
+        <input type="number" id="foodPrice" min="0" required> 
 
-        <button type="submit">登録</button>
-    </form>
+        <label>カテゴリー：</label>
+        <select id="foodCategory">
+            <option value="野菜">野菜</option>
+            <option value="肉">肉</option>
+            <option value="魚">魚</option>
+            <option value="飲料">飲料</option>
+            <option value="その他">その他</option>
+        </select>
 
-    <p id="message"></p>
+        <button type="submit">登録</button>
+    </form>
 
-        <h2>登録済みの食材一覧</h2>
-    <ul id="foodList"></ul>
+    <p id="message"></p>
 
+    <h2>登録済みの食材一覧</h2>
+    <table class="schedule-table" id="registerFoodTable"> 
+        <thead>
+            <tr><th>食材</th><th>期限</th><th>カテゴリー</th><th>値段</th><th>登録日</th><th>操作</th></tr> 
+        </thead>
+        <tbody id="registerFoodBody">
+            </tbody>
+    </table>
+    
     <script src="register_page.js"></script>
 </body>
 </html>

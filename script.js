@@ -1,4 +1,4 @@
-// script.js (レシピ提案機能を復活させた完全版)
+// script.js (食材リストとフォームの依存を解消し、合計金額ロジックを追加した最終版)
 
 // ======== 状態変数 ========
 let currentDate = new Date();
@@ -8,18 +8,15 @@ let items = []; // 現在ログイン中のユーザーの食材データ (食�
 const userName = localStorage.getItem("userName");
 const allUsers = JSON.parse(localStorage.getItem("allUsers")) || {};
 // アプリ起動時にユーザーデータをロード
-const userData = allUsers[userName]?.data || { items: [] };
+const userData = allUsers[userName]?.data || { items: [] }; 
+items = userData.items || []; // 起動時にitemsをロード
 
 // ======== 要素取得 ========
-const form = document.getElementById('addItemForm'); // メインの食材追加フォーム
-const table = document.getElementById('scheduleTable');
 const calendarBody = document.getElementById("calendarBody");
 const monthYear = document.getElementById("monthYear");
 const prevBtn = document.getElementById("prevBtn"); 
 const nextBtn = document.getElementById("nextBtn");
 const todayBtn = document.getElementById("todayBtn");
-// register.jsからも参照されるため、グローバルスコープに残します。
-const foodList = document.getElementById("foodList");
 
 
 // ======== ヘルパー関数 ========
@@ -31,70 +28,32 @@ function formatDate(date) {
 }
 
 // ======== データ保存（ユーザーごと） ========
-// 💡 saveData()がテーブルの内容をローカルストレージに保存し、カレンダーを更新します。
+// 💡 itemsグローバル変数の変更をローカルストレージに反映させ、カレンダーとメニューを更新します
 function saveData() {
-  const data = [];
-  // tbodyの最初の子がヘッダー行ではない前提で、全てのtrを読み込みます。
-  const rows = table.querySelectorAll('tbody tr');
   
-  // ヘッダー行をスキップするロジックをより確実に（もしあれば）
-  rows.forEach((row) => {
-    const cells = row.querySelectorAll('td');
-    // 行がデータ（2つのセル）を持っているか確認
-    if (cells.length >= 2) {
-      data.push({ name: cells[0].innerText, date: cells[1].innerText });
-    }
-  });
-
-  // ローカル保存（ユーザー別）
   const all = JSON.parse(localStorage.getItem("allUsers")) || {};
   if (!all[userName]) return;
-  all[userName].data.items = data;
-  localStorage.setItem("allUsers", JSON.stringify(all));
+  
+  // itemsの変更をローカルストレージに保存
+  all[userName].data.items = items; 
+  localStorage.setItem("allUsers", JSON.stringify(all)); 
 
-  items = data; // グローバル変数itemsを更新
   renderCalendar(); // カレンダーを再描画
-
-  // 食材リスト（もしあれば）とメニュー提案も更新
-  // 💡 ここで suggestMenuByIngredient() を実行し、データ更新を反映
+  
+  // 食材リストとメニュー提案も更新
   if (typeof suggestMenuByIngredient === 'function') {
       suggestMenuByIngredient();
   }
 }
 
 // ======== データ読み込み ========
+// 💡 itemsグローバル変数の初期化のみ行います。
 function loadData() {
   const stored = userData.items || [];
   items = stored;
-
-  const tbody = table.querySelector('tbody');
-  if (!tbody) return;
-
-  // 既存行をクリア（ヘッダー行はHTMLに残っているため）
-  const dataRows = tbody.querySelectorAll('tr');
-  dataRows.forEach(row => row.remove());
-
-  // データを行として追加
-  stored.forEach(item => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${item.name}</td>
-      <td>${item.date}</td>
-      <td><button class="delete-btn">削除</button></td>
-    `;
-    tbody.appendChild(row);
-  });
 }
 
-// ======== 行削除 (スケジュールテーブル) ========
-table.addEventListener("click", (e) => {
-  if (e.target.classList.contains("delete-btn")) {
-    e.target.closest("tr").remove();
-    saveData(); // データを更新し、カレンダーも更新
-  }
-});
-
-// ======== カレンダー描画 (変更なし) ========
+// ======== カレンダー描画と合計金額計算 ========
 function renderCalendar() {
   calendarBody.innerHTML = "";
   const today = formatDate(new Date());
@@ -109,6 +68,9 @@ function renderCalendar() {
   monthYear.textContent = `${year}年 ${month + 1}月`;
 
   let row = document.createElement("tr");
+
+  // 💰 月の合計金額計算用の変数
+  let monthlyTotal = 0; 
 
   // 前月分
   for (let i = 0; i < startDay; i++) {
@@ -141,6 +103,11 @@ function renderCalendar() {
         ev.classList.add("event");
         ev.innerHTML = `<span class="event-dot"></span>${item.name}`;
         dayContent.appendChild(ev);
+
+        // 💰 この月の食材の値段を合計に追加（期限月で計算）
+        if (item.price && typeof item.price === 'number') {
+            monthlyTotal += item.price;
+        }
       }
     });
 
@@ -162,9 +129,15 @@ function renderCalendar() {
     row.appendChild(td);
   }
   calendarBody.appendChild(row);
+
+  // 💰 合計金額の表示を更新
+  const totalPriceElement = document.getElementById('totalPrice');
+  if (totalPriceElement) {
+      totalPriceElement.textContent = `${monthlyTotal.toLocaleString()} 円`;
+  }
 }
 
-// ======== 月移動 (変更なし) ========
+// ======== 月移動 ========
 prevBtn.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
@@ -178,22 +151,18 @@ todayBtn.addEventListener("click", () => {
   renderCalendar();
 });
 
-// ======== ヘッダーにユーザー名表示 (変更なし) ========
-function displayUserNameInHeader() {
-  const header = document.querySelector('.main .header');
-  if (header) {
-    header.textContent = userName
-      ? `ようこそ、${userName}さん`
-      : "EP403-3";
-  }
-}
 
-// ======== 通知関連 (元の省略状態で残します) ========
-function requestNotificationPermission() { /* ... */ }
-function checkExpirationNotifications() { /* ... */ }
-function startNotificationLoop() { /* ... */ }
+// ======== ヘッダーにユーザー名表示 (HTMLのロード時処理と重複するためコメントアウト) ========
+// function displayUserNameInHeader() { /* ... */ }
 
-// ======== 大量レシピデータ (元の完全な状態で残します) ========
+
+// ======== 通知関連 (省略) ========
+// function requestNotificationPermission() { /* ... */ }
+// function checkExpirationNotifications() { /* ... */ }
+// function startNotificationLoop() { /* ... */ }
+
+
+// ======== 大量レシピデータ (省略。元のデータを使用) ========
 const recipes = [
   { name: "カレーライス", ingredients: ["じゃがいも","にんじん","玉ねぎ"] },
   { name: "野菜炒め", ingredients: ["にんじん","ピーマン","玉ねぎ"] },
@@ -311,8 +280,6 @@ const recipes = [
   { name: "豚キムチ丼", ingredients: ["豚肉","キムチ"] },
   { name: "おでん", ingredients: ["大根","卵","こんにゃく","ちくわ"] },
   { name: "茶碗蒸し", ingredients: ["卵","鶏肉","椎茸"] },
-
-  // ここから新規追加で合計300品まで
   { name: "白菜の漬物", ingredients: ["白菜"] },
   { name: "大根の煮物", ingredients: ["大根"] },
   { name: "キャベツのコールスロー", ingredients: ["キャベツ","にんじん"] },
@@ -379,7 +346,7 @@ const recipes = [
 ];
 
 
-// ======== 食材からメニューを提案する関数 (元の完全な関数を復元) ========
+// ======== 食材からメニューを提案する関数 (変更なし) ========
 function suggestMenuByIngredient() {
   // ユーザーの食材名を取得して重複を削除
   const userIngredients = [...new Set(items.map(item => item.name))];
@@ -412,7 +379,7 @@ function suggestMenuByIngredient() {
 }
 
 
-// ======== 特定の食材を使ったメニューを表示 (元の完全な関数を復元) ========
+// ======== 特定の食材を使ったメニューを表示 (変更なし) ========
 function showRecipesByIngredient(ingredient) {
   const container = document.getElementById("menuContainer");
   const div = document.createElement("div");
@@ -447,7 +414,7 @@ function showRecipesByIngredient(ingredient) {
   container.appendChild(div);
 }
 
-// ======== レシピの材料を表示 (元の完全な関数を復元) ========
+// ======== レシピの材料を表示と消費 (変更なし) ========
 function showIngredients(parentDiv, recipe) {
   const div = document.createElement("div");
   div.classList.add(`ingredients-for-${recipe.name}`);
@@ -461,7 +428,6 @@ function showIngredients(parentDiv, recipe) {
     <ul>
       ${recipe.ingredients.map(ing => {
         const hasIngredient = items.some(item => item.name === ing);
-        // 期限切れが近い食材のチェック（今回は簡略化）
         return `<li class="${hasIngredient ? 'has-ingredient' : ''}">${ing}</li>`;
       }).join("")}
     </ul>
@@ -471,8 +437,7 @@ function showIngredients(parentDiv, recipe) {
 
   // 「材料を消費する」ボタン処理
   div.querySelector(".use-btn").addEventListener("click", () => {
-    // 🚨 注意: この削除ロジックは、以前のコードと同じく、
-    // 最も期限が近い1つの食材を削除します。
+    // 最も期限が近い1つの食材を削除するロジック
     recipe.ingredients.forEach(ing => {
       const matchingItems = items
         .filter(item => item.name === ing)
@@ -482,39 +447,31 @@ function showIngredients(parentDiv, recipe) {
         const index = items.indexOf(matchingItems[0]);
         if (index !== -1) {
           items.splice(index, 1);
-
-          // テーブルの該当行も削除
-          const rows = table.querySelectorAll('tbody tr');
-          for (let row of rows) {
-            const nameCell = row.cells[0];
-            const dateCell = row.cells[1];
-            if (!nameCell || !dateCell) continue;
-            if (nameCell.innerText === ing && dateCell.innerText === matchingItems[0].date) {
-              row.remove();
-              break; // 期限が早い順なので1回だけ削除
-            }
-          }
         }
       }
     });
 
-    saveData(); // データ保存、テーブル再描画、カレンダー更新、メニュー提案更新
+    saveData(); // データ保存、カレンダー更新、メニュー提案更新
     parentDiv.remove(); // 詳細を閉じる
   });
 }
 
 
-// ======== ボタンイベント登録 (元の完全な状態で残します) ========
+// ======== ボタンイベント登録 (変更なし) ========
 document.getElementById("suggestBtn").addEventListener("click", suggestMenuByIngredient);
 
 
-// ======== 初期化 (変更なし) ========
+// ======== 初期化 ========
 window.addEventListener('DOMContentLoaded', () => {
-  loadData(); // データをテーブルに読み込む
+  loadData(); // データをグローバル変数itemsに読み込む
   renderCalendar(); // カレンダーを描画
-  displayUserNameInHeader();
   
-  // 通知機能の初期化 (省略)
+  // 通知機能の初期化 (必要であればコメントアウトを外してください)
   // requestNotificationPermission();
   // startNotificationLoop();
+
+  // ロード時にメニュー提案を一度実行し、アイテムを反映させます
+  if (typeof suggestMenuByIngredient === 'function') {
+    suggestMenuByIngredient();
+  }
 });

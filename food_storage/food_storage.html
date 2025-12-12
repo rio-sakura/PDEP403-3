@@ -1,31 +1,52 @@
-    <!doctype html>
-    <html lang="ja">
-    <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>食材一覧（管理システム）</title>
-    <link rel="stylesheet" href="/food_storage/food_storage.css" />
-    </head>
-    <body>
-    <header class="site-header">
-        <h1>食材管理システム（閲覧専用）</h1>
-        <p class="lead">登録済みの食材情報を一覧表示します。</p>
-    </header>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>食材一覧（スライドショー表示）</title>
+<link rel="stylesheet" href="/food_storage/food_storage.css" />
+</head>
+<body>
 
-    <main class="container">
-        <section class="card list-card" aria-labelledby="list-title">
-        <h2 id="list-title">登録済みの食材一覧</h2>
-        <div id="foods-list" class="foods-list"></div>
-        <div class="list-actions">
-            <button id="refresh-btn" class="btn">更新</button>
+<header class="site-header">
+    <h1>食材管理システム（閲覧専用）</h1>
+    <p class="lead">1枚ずつスライドで食材を表示します。</p>
+</header>
+
+<main class="container">
+    <section class="card list-card" aria-labelledby="list-title">
+
+    <h2 id="list-title">食材スライドショー</h2>
+
+    <!-- 🔍★ 追加：検索ボックス -->
+    <div class="search-box" style="margin-bottom: 15px; text-align:center;">
+        <input id="search-input" type="text" placeholder="食材・ラベル・保存場所を検索" 
+               style="padding:8px; width:60%; max-width:300px;">
+        <button id="search-btn" class="btn" style="padding:8px 12px;">検索</button>
+    </div>
+    <!-- 🔍★ 追加ここまで -->
+
+    <div id="foods-list" class="foods-list">
+        <div id="slideshow-container">
+            <button id="prev-btn" class="nav-btn">＜</button>
+
+            <div id="slide-area"></div>
+
+            <button id="next-btn" class="nav-btn">＞</button>
         </div>
-        </section>
-    </main>
+    </div>
 
-    <footer class="site-footer">
-        <small>※ 管理者が登録したデータベースから取得しています。</small>
-    </footer>
+    <div class="list-actions">
+        <button id="refresh-btn" class="btn">更新</button>
+    </div>
 
-    <script src="/food_storage/food_storage.js"></script>
-    </body>
-    </html>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <small>※ 管理者が登録したデータベースから取得しています。</small>
+</footer>
+
+<script src="/food_storage/food_storage.js"></script>
+</body>
+</html>

@@ -1,180 +1,42 @@
-    :root {
-    --bg: #f7f9fc;
-    --card: #ffffff;
-    --accent: #2b7cff;
-    --muted: #6b7280;
-    --border: #e5eaf3;
-    --radius: 12px;
-    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP",
-        system-ui, -apple-system, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, sans-serif;
-    }
+/* ====== ここまではあなたの既存CSS ====== */
 
-    /* リセットと基本設定 */
-    * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    }
 
-    html, body {
-    height: 100%;
-    background: var(--bg);
-    color: #0f172a;
-    }
+/* -------------------------------------------
+   ▼ ここから追加（スライドショー用）
+------------------------------------------- */
 
-    /* ヘッダー */
-    .site-header {
-    text-align: center;
-    padding: 32px 16px 10px;
-    background: linear-gradient(180deg, #fff, #f1f5ff);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .site-header h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #0f172a;
-    letter-spacing: -0.5px;
-    }
-    .lead {
-    color: var(--muted);
-    margin-top: 6px;
-    font-size: 0.95rem;
-    }
+/* foods-list のスクロールを無効化（スライド専用に） */
+#foods-list {
+    overflow: hidden !important;
+    max-height: none !important;
+}
 
-    /* メインコンテナ */
-    .container {
-    max-width: 980px;
-    margin: 28px auto;
-    padding: 16px;
-    }
-
-    /* カード */
-    .card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
-    border: 1px solid var(--border);
-    }
-
-    /* 食材リスト全体 */
-    .foods-list {
+/* スライド表示のレイアウト */
+#slideshow-container {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-    max-height: 70vh;
-    overflow-y: auto;
-    padding-right: 4px;
-    }
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding: 20px 0;
+}
 
-    /* 各食材カード */
-    .food {
-    padding: 16px;
-    border-radius: 10px;
-    border: 1px solid #e3ebff;
-    background: linear-gradient(180deg, #fff, #f9fbff);
-    transition: all 0.2s ease-in-out;
-    }
-    .food:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(43, 124, 255, 0.15);
-    }
+/* スライドエリア（カード表示部分） */
+#slide-area {
+    width: 100%;
+    max-width: 600px;
+}
 
-    .food h3 {
-    margin-bottom: 6px;
-    font-size: 1.1rem;
-    color: #0f172a;
-    font-weight: 600;
-    }
-
-    /* メタ情報 */
-    .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 6px;
-    }
-    .meta-item {
-    font-size: 0.9rem;
-    color: var(--muted);
-    }
-
-    /* ラベル（chip） */
-    .chip {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 999px;
-    background: rgba(43, 124, 255, 0.1);
-    color: var(--accent);
-    font-weight: 600;
-    font-size: 0.82rem;
-    }
-
-    /* 保存手順 */
-    .steps-list {
-    margin-left: 18px;
-    color: #0f172a;
-    font-size: 0.95rem;
-    }
-    .muted {
-    color: var(--muted);
-    }
-
-    /* 更新ボタン */
-    .list-actions {
-    margin-top: 16px;
-    text-align: center;
-    }
-    .btn {
-    display: inline-block;
-    padding: 8px 14px;
-    border-radius: 10px;
-    border: 1px solid #d6e0ff;
-    background: linear-gradient(180deg, #ffffff, #f2f7ff);
+/* スライド送りボタン */
+.nav-btn {
+    font-size: 2rem;
+    background: none;
+    border: none;
     cursor: pointer;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-    }
-    .btn:hover {
-    background: #e8f0ff;
-    border-color: #b4ceff;
-    }
-    .btn:active {
-    transform: scale(0.98);
-    }
-
-    /* フッター */
-    .site-footer {
-    text-align: center;
-    padding: 14px;
-    color: var(--muted);
-    font-size: 0.85rem;
-    }
-
-    /* スクロールバー */
-    .foods-list::-webkit-scrollbar {
-    width: 6px;
-    }
-    .foods-list::-webkit-scrollbar-thumb {
-    background: rgba(43, 124, 255, 0.3);
-    border-radius: 999px;
-    }
-    .foods-list::-webkit-scrollbar-track {
-    background: transparent;
-    }
-
-    /* レスポンシブ対応 */
-    @media (max-width: 720px) {
-    .container {
-        padding: 12px;
-    }
-    .food h3 {
-        font-size: 1rem;
-    }
-    .meta {
-        flex-direction: column;
-        gap: 4px;
-    }
-    }
+    padding: 10px 20px;
+    user-select: none;
+    transition: 0.2s ease;
+}
+.nav-btn:hover {
+    opacity: 0.6;
+}

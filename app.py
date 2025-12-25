@@ -75,6 +75,18 @@ def serve_food_storage_folder(filename):
 def serve_login_folder(filename):
     return send_from_directory(os.path.join(BASE_DIR, 'login'), filename)
 
+@app.route('/check-session')
+def check_session():
+    return jsonify({
+        "loggedIn": True,
+        "user": {"name": "ゲスト"}
+    })
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    return jsonify({"status": "ok"})
+
+
 # ==========================================
 #  API (データのやり取り用)
 # ==========================================
